@@ -5,27 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Deutsch‑Toolbox – Unterrichtswebsite</title>
   <style>
-    :root{--bg:#0b1020;--panel:#0f1736;--card:#131a33;--muted:#9aa4bf;--text:#e6e9f0;--accent:#6d7cff;--ok:#16a34a;--bad:#dc2626;}
+    :root{--bg:#0b1020;--panel:#0f1736;--card:#131a33;--muted:#9aa4bf;--text:#e6e9f0;--accent:#6d7cff;--ok:#16a34a;--bad:#dc2626}
     *{box-sizing:border-box}
     body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Ubuntu,Inter,Arial,sans-serif;background:linear-gradient(180deg,#0b1020,#0b1226 40%,#0c132a);color:var(--text)}
     .app{display:grid;grid-template-columns:280px 1fr;min-height:100dvh}
-    .side{background:rgba(255,255,255,0.03);border-right:1px solid rgba(255,255,255,0.08);padding:18px;position:sticky;top:0;height:100dvh}
+    .side{background:rgba(255,255,255,.03);border-right:1px solid rgba(255,255,255,.08);padding:18px;position:sticky;top:0;height:100dvh}
     .brand{font-weight:900;letter-spacing:.3px;margin-bottom:14px;font-size:20px}
     .nav{display:flex;flex-direction:column;gap:6px}
     .nav button{width:100%;text-align:left;padding:10px 12px;border-radius:12px;border:1px solid transparent;background:transparent;color:var(--text);cursor:pointer}
     .nav button.active{background:linear-gradient(180deg,#1a2352,#131a33);border-color:#2a3570}
-    .nav .group{margin-top:12px;color:var(--muted);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
     .main{padding:20px}
     .tool{display:none}
     .tool.active{display:block}
-
     .card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:16px;box-shadow:0 8px 30px rgba(0,0,0,.2)}
     .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
     .grid{display:grid;gap:12px}
     .grid2{grid-template-columns:1fr 1fr}
     .grid3{grid-template-columns:repeat(3,1fr)}
     @media(min-width:980px){.grid2{display:grid}.grid3{display:grid}}
-
     label{font-weight:700}
     input[type="text"],input[type="number"],textarea,select{width:100%;padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:#0e1530;color:var(--text);outline:none}
     textarea{min-height:140px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:14px}
@@ -39,8 +36,6 @@
     .table th,.table td{border-bottom:1px solid rgba(255,255,255,.08);padding:8px 6px;text-align:left;font-size:14px}
     .qbig{font-size:clamp(20px,3.6vw,28px);font-weight:900}
     .small{font-size:12px}
-    .spacer{height:6px}
-    .tools-header{font-weight:900;font-size:24px;margin:6px 0 14px}
     .hint{background:#0e1634;border:1px dashed rgba(255,255,255,.12);padding:8px 10px;border-radius:10px}
   </style>
 </head>
@@ -49,47 +44,45 @@
     <aside class="side">
       <div class="brand">📚 Deutsch‑Toolbox</div>
       <div class="nav" id="nav"></div>
-      <div class="spacer"></div>
-      <div class="hint small">Daten werden lokal im Browser gespeichert. Keine Server nötig.</div>
+      <div class="hint small" style="margin-top:12px">Alle Daten werden lokal im Browser gespeichert. Kein Server nötig.</div>
     </aside>
 
     <main class="main">
-      <!-- ===== Tools Container ===== -->
       <div id="tools"></div>
     </main>
   </div>
 
   <template id="tpl-nav">
-    <div class="group">Trainer</div>
+    <div class="small" style="opacity:.8;margin:6px 0">Trainer</div>
     <button data-tool="stammformen" class="active">🧠 Stammformen‑Trainer</button>
 
-    <div class="group">Zeit & Klasse</div>
+    <div class="small" style="opacity:.8;margin:10px 0 6px">Zeit & Klasse</div>
     <button data-tool="clock">⏰ Zeituhr</button>
     <button data-tool="stopwatch">⏱️ Stoppuhr</button>
     <button data-tool="countdown">⏳ Countdown‑Timer</button>
     <button data-tool="names">🎲 Namens‑Zufall & Gruppen</button>
 
-    <div class="group">Deutsch‑Werkzeuge</div>
+    <div class="small" style="opacity:.8;margin:10px 0 6px">Deutsch‑Werkzeuge</div>
     <button data-tool="cloze">🔡 Lückentext‑Generator</button>
-    <button data-tool="scrambler">🧩 Satzbau‑Mixer</button>
+    <button data-tool="satzglieder">🧩 Satzglied‑Tester</button>
     <button data-tool="textstats">📝 Text‑Analyse</button>
     <button data-tool="dictation">🔊 Diktat‑Vorleser</button>
   </template>
 
   <template id="tpl-tools">
-    <!-- =============== STAMMFORMEN =============== -->
+    <!-- STAMMFORMEN -->
     <section class="tool active" id="tool-stammformen">
-      <div class="tools-header">🧠 Stammformen‑Trainer</div>
+      <div class="qbig">🧠 Stammformen‑Trainer</div>
       <div class="grid grid2">
         <div class="card">
           <div class="row" style="justify-content:space-between;align-items:flex-end;margin-bottom:8px">
             <div style="flex:1;min-width:220px">
               <label for="sf-student">Name (optional, Export)</label>
-              <input id="sf-student" type="text" placeholder="Vorname Nachname">
+              <input id="sf-student" type="text" placeholder="Vorname Nachname" />
             </div>
             <div>
               <label for="sf-count">Anzahl Aufgaben</label>
-              <input id="sf-count" type="number" min="1" value="10" style="width:110px">
+              <input id="sf-count" type="number" min="1" value="10" style="width:110px" />
             </div>
           </div>
           <div class="row" style="justify-content:space-between">
@@ -107,19 +100,21 @@
         </div>
         <div class="card">
           <div class="row" style="justify-content:space-between;align-items:center">
-            <div style="font-weight:800">Wortliste</div>
+            <div style="font-weight:800">Wortlisten‑Sets</div>
             <div class="row">
-              <button class="btn" id="sf-saveList">Liste speichern</button>
-              <button class="btn ghost" id="sf-restoreList">Standard laden</button>
+              <select id="sf-setSelect" style="min-width:160px"></select>
+              <button class="btn" id="sf-newSet">Neu</button>
+              <button class="btn" id="sf-saveSet">Set speichern</button>
+              <button class="btn" id="sf-delSet">Löschen</button>
             </div>
           </div>
-          <p class="muted small">Format: <code>Infinitiv;Präteritum;Partizip II</code>. Varianten mit <code>|</code> trennen. Eine Zeile pro Verb.</p>
+          <p class="muted small">Format: <code>Infinitiv;Präteritum;Partizip II</code>. Varianten mit <code>|</code>. Upload/Download möglich.</p>
           <textarea id="sf-list" spellcheck="false"></textarea>
           <div class="row" style="justify-content:space-between;margin-top:10px">
-            <div class="muted small">Lokal im Browser gespeichert.</div>
+            <div class="muted small">Lokal gespeichert.</div>
             <div class="row">
               <button class="btn" id="sf-downloadList">Liste als Datei</button>
-              <input type="file" id="sf-uploadList" accept=".txt,.csv" style="display:none">
+              <input type="file" id="sf-uploadList" accept=".txt,.csv" style="display:none" />
               <button class="btn" id="sf-uploadBtn">Liste laden…</button>
             </div>
           </div>
@@ -127,43 +122,46 @@
       </div>
     </section>
 
-    <!-- =============== CLOCK =============== -->
+    <!-- CLOCK -->
     <section class="tool" id="tool-clock">
-      <div class="tools-header">⏰ Zeituhr</div>
+      <div class="qbig">⏰ Zeituhr</div>
       <div class="card" style="text-align:center">
         <div id="clock-time" class="qbig" style="font-size:min(12vw,84px)">--:--:--</div>
         <div class="muted" id="clock-date"></div>
       </div>
     </section>
 
-    <!-- =============== STOPWATCH =============== -->
+    <!-- STOPWATCH -->
     <section class="tool" id="tool-stopwatch">
-      <div class="tools-header">⏱️ Stoppuhr</div>
+      <div class="qbig">⏱️ Stoppuhr</div>
       <div class="card" style="text-align:center">
         <div id="sw-display" class="qbig" style="font-size:min(12vw,72px)">00:00.000</div>
         <div class="row" style="justify-content:center;margin-top:10px">
           <button class="btn primary" id="sw-start">Start</button>
           <button class="btn" id="sw-lap">Runde</button>
-          <button class="btn ghost" id="sw-reset">Reset</button>
+          <button class="btn" id="sw-reset">Reset</button>
+        </div>
+        <div class="row" style="justify-content:center;margin-top:8px">
+          <input id="sw-lapName" placeholder="Runden‑Name (optional)" style="max-width:320px" />
         </div>
         <div style="margin-top:12px;max-height:220px;overflow:auto">
-          <table class="table" id="sw-laps"><thead><tr><th>#</th><th>Zeit</th></tr></thead><tbody></tbody></table>
+          <table class="table" id="sw-laps"><thead><tr><th>#</th><th>Name</th><th>Zeit</th></tr></thead><tbody></tbody></table>
         </div>
       </div>
     </section>
 
-    <!-- ============== COUNTDOWN ============== -->
+    <!-- COUNTDOWN -->
     <section class="tool" id="tool-countdown">
-      <div class="tools-header">⏳ Countdown‑Timer</div>
+      <div class="qbig">⏳ Countdown‑Timer</div>
       <div class="card">
         <div class="grid grid3">
           <div>
             <label>Minuten</label>
-            <input id="cd-min" type="number" min="0" value="5">
+            <input id="cd-min" type="number" min="0" value="5" />
           </div>
           <div>
             <label>Sekunden</label>
-            <input id="cd-sec" type="number" min="0" max="59" value="0">
+            <input id="cd-sec" type="number" min="0" max="59" value="0" />
           </div>
           <div>
             <label>&nbsp;</label>
@@ -179,37 +177,29 @@
       </div>
     </section>
 
-    <!-- =============== NAMES =============== -->
+    <!-- NAMES & GROUPS -->
     <section class="tool" id="tool-names">
-      <div class="tools-header">🎲 Namens‑Zufall & Gruppen</div>
+      <div class="qbig">🎲 Namens‑Zufall & Gruppen</div>
       <div class="grid grid2">
         <div class="card">
           <label>Namensliste (eine Zeile pro Name)</label>
           <textarea id="ng-list" placeholder="Anna\nBen\nElif\n..." spellcheck="false"></textarea>
           <div class="row" style="justify-content:space-between;margin-top:8px">
-            <div class="row">
-              <label class="pill"><input id="ng-noRepeat" type="checkbox" checked style="transform:translateY(1.5px);margin-right:8px"> Nicht wiederholen</label>
-            </div>
-            <div class="row">
-              <button class="btn" id="ng-save">Speichern</button>
-              <button class="btn ghost" id="ng-clear">Leeren</button>
-            </div>
-          </div>
-        </div>
-        <div class="card">
-          <div class="row" style="justify-content:space-between">
-            <div class="qbig" id="ng-picked">—</div>
+            <label class="pill"><input id="ng-noRepeat" type="checkbox" checked style="transform:translateY(1.5px);margin-right:8px"> Nicht wiederholen</label>
             <div class="row">
               <button class="btn primary" id="ng-pick">Ziehen</button>
               <button class="btn" id="ng-reset">Reset</button>
             </div>
           </div>
-          <div class="muted small" id="ng-remaining"></div>
-          <div class="spacer"></div>
-          <div class="grid grid3">
+          <div class="hint small" id="ng-picked" style="margin-top:8px">—</div>
+        </div>
+        <div class="card">
+          <label>Konflikt‑Paare (Name1,Name2 pro Zeile: dürfen nicht in einer Gruppe sein)</label>
+          <textarea id="ng-conflicts" placeholder="Anna,Ben\nElif,Max"></textarea>
+          <div class="grid grid3" style="margin-top:8px">
             <div>
               <label>Gruppengröße</label>
-              <input id="ng-gsize" type="number" min="2" value="3">
+              <input id="ng-gsize" type="number" min="2" value="3" />
             </div>
             <div>
               <label>&nbsp;</label>
@@ -221,27 +211,28 @@
       </div>
     </section>
 
-    <!-- ============== CLOZE ============== -->
+    <!-- CLOZE -->
     <section class="tool" id="tool-cloze">
-      <div class="tools-header">🔡 Lückentext‑Generator</div>
+      <div class="qbig">🔡 Lückentext‑Generator</div>
       <div class="grid grid2">
         <div class="card">
-          <label>Ausgangstext</label>
+          <label>Ausgangstext (Formatierung bleibt erhalten)</label>
           <textarea id="cz-input" placeholder="Füge hier den Text ein…"></textarea>
           <div class="grid grid3" style="margin-top:10px">
             <div>
               <label>Lückenanteil (%)</label>
-              <input id="cz-pct" type="number" min="0" max="90" value="20">
+              <input id="cz-pct" type="number" min="0" max="90" value="20" />
             </div>
             <div>
               <label>Min. Wortlänge</label>
-              <input id="cz-minlen" type="number" min="2" value="4">
+              <input id="cz-minlen" type="number" min="2" value="4" />
             </div>
             <div>
               <label>&nbsp;</label>
               <div class="row">
                 <button class="btn primary" id="cz-make">Erstellen</button>
-                <button class="btn" id="cz-print">Drucken</button>
+                <button class="btn" id="cz-copy">In Zwischenablage</button>
+                <button class="btn ghost" id="cz-showKey">Lösung ein/aus</button>
               </div>
             </div>
           </div>
@@ -249,41 +240,36 @@
         <div class="card">
           <div class="row" style="justify-content:space-between">
             <div style="font-weight:800">Arbeitsblatt</div>
-            <div class="row">
-              <button class="btn" id="cz-copy">In Zwischenablage</button>
-              <button class="btn ghost" id="cz-showKey">Lösung ein/aus</button>
-            </div>
+            <button class="btn" id="cz-print">Drucken</button>
           </div>
           <div id="cz-output" style="white-space:pre-wrap;margin-top:8px"></div>
         </div>
       </div>
     </section>
 
-    <!-- ============== SCRAMBLER ============== -->
-    <section class="tool" id="tool-scrambler">
-      <div class="tools-header">🧩 Satzbau‑Mixer</div>
+    <!-- SATZGLIED-TESTER -->
+    <section class="tool" id="tool-satzglieder">
+      <div class="qbig">🧩 Satzglied‑Tester</div>
       <div class="grid grid2">
         <div class="card">
-          <label>Sätze (eine Zeile pro Satz)</label>
-          <textarea id="sb-input" placeholder="Weil es regnet, bleiben wir zu Hause.\nWenn die Glocke läutet, räumen alle auf."></textarea>
-          <div class="row" style="justify-content:space-between;margin-top:8px">
-            <label class="pill"><input id="sb-keepPunct" type="checkbox" checked style="transform:translateY(1.5px);margin-right:8px"> Satzzeichen behalten</label>
-            <div class="row">
-              <button class="btn primary" id="sb-make">Erstellen</button>
-              <button class="btn" id="sb-print">Drucken</button>
-            </div>
+          <label>Sätze (Satzglieder mit | trennen)</label>
+          <textarea id="sg-input" placeholder="[Subjekt]|[Prädikat]|[Objekt]|[Adverbiale]\nWir|lesen|heute|den Text."></textarea>
+          <div class="row" style="justify-content:flex-end;margin-top:8px">
+            <button class="btn primary" id="sg-make">Aufgaben erzeugen</button>
+            <button class="btn" id="sg-print">Drucken</button>
           </div>
         </div>
         <div class="card">
           <div style="font-weight:800">Arbeitsblatt</div>
-          <div id="sb-output" style="margin-top:8px"></div>
+          <div id="sg-output" style="margin-top:8px"></div>
         </div>
       </div>
+      <div class="small muted" style="margin-top:6px">Hinweis: Testet Identifikation/Reihenfolge von Satzgliedern; keine automatische Verbbeugung.</div>
     </section>
 
-    <!-- ============== TEXTSTATS ============== -->
+    <!-- TEXT-ANALYSE -->
     <section class="tool" id="tool-textstats">
-      <div class="tools-header">📝 Text‑Analyse</div>
+      <div class="qbig">📝 Text‑Analyse</div>
       <div class="grid grid2">
         <div class="card">
           <label>Text</label>
@@ -317,13 +303,17 @@
             <div style="font-weight:800">Häufigste Wörter</div>
             <div id="ts-top" class="small muted"></div>
           </div>
+          <div style="margin-top:10px">
+            <div style="font-weight:800">Direkte Rede – Auszüge</div>
+            <div id="ts-quotes" class="small"></div>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- ============== DICTATION ============== -->
+    <!-- DIKTAT -->
     <section class="tool" id="tool-dictation">
-      <div class="tools-header">🔊 Diktat‑Vorleser</div>
+      <div class="qbig">🔊 Diktat‑Vorleser</div>
       <div class="grid grid2">
         <div class="card">
           <label>Text (Satz pro Zeile empfohlen)</label>
@@ -331,11 +321,11 @@
           <div class="grid grid3" style="margin-top:10px">
             <div>
               <label>Tempo (0.5–1.5)</label>
-              <input id="dk-rate" type="number" min="0.5" max="1.5" step="0.1" value="0.9">
+              <input id="dk-rate" type="number" min="0.5" max="1.5" step="0.1" value="0.9" />
             </div>
             <div>
               <label>Pause zwischen Zeilen (s)</label>
-              <input id="dk-pause" type="number" min="0" step="0.5" value="2">
+              <input id="dk-pause" type="number" min="0" step="0.5" value="2" />
             </div>
             <div>
               <label>&nbsp;</label>
@@ -356,222 +346,90 @@
   </template>
 
   <script>
-    // ---------- Navigation & Mount ----------
-    const navHost = document.getElementById('nav');
-    const toolsHost = document.getElementById('tools');
+    // Mount UI
+    const navHost=document.getElementById('nav');
+    const toolsHost=document.getElementById('tools');
     navHost.appendChild(document.getElementById('tpl-nav').content.cloneNode(true));
     toolsHost.appendChild(document.getElementById('tpl-tools').content.cloneNode(true));
 
+    // Navigation behavior
     navHost.addEventListener('click', (e)=>{
-      const btn = e.target.closest('button[data-tool]');
-      if(!btn) return;
+      const btn=e.target.closest('button[data-tool]'); if(!btn) return;
       navHost.querySelectorAll('button[data-tool]').forEach(b=>b.classList.remove('active'));
       btn.classList.add('active');
-      const id = 'tool-'+btn.dataset.tool;
-      document.querySelectorAll('.tool').forEach(t=>t.classList.remove('active'));
+      const id='tool-'+btn.dataset.tool; document.querySelectorAll('.tool').forEach(t=>t.classList.remove('active'));
       document.getElementById(id).classList.add('active');
     });
 
-    // ---------- Helper ----------
-    const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-    const ls = (k,v) => v===undefined ? localStorage.getItem(k) : localStorage.setItem(k,v);
-    const shuffle = a => a.sort(()=>Math.random()-0.5);
+    // Helpers
+    const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    const pad=n=>String(n).padStart(2,'0');
+    const shuffle=a=>a.sort(()=>Math.random()-0.5);
 
-    function norm(str,tolerant=true){
-      if(!str) return '';
-      let x = String(str).trim();
-      if(tolerant){ x=x.toLowerCase().replace(/ß/g,'ss').replace(/\s+/g,' '); }
-      return x;
-    }
-
-    function flash(msg){
-      const el=document.createElement('div'); el.textContent=msg; el.style.position='fixed';el.style.right='16px';el.style.bottom='16px';el.style.padding='10px 12px';el.style.borderRadius='10px';el.style.background='#0f1838';el.style.border='1px solid rgba(255,255,255,.14)'; el.style.zIndex=9999;
-      document.body.appendChild(el); setTimeout(()=>el.remove(),1200);
-    }
-
-    // ==================================================
-    // 1) STAMMFORMEN
-    // ==================================================
-    const SF_DEFAULT = `finden;fand;gefunden\ngehen;ging;gegangen\nkommen;kam;gekommen\nsehen;sah;gesehen\nlesen;las;gelesen\nessen;aß|ass;gegessen\ntrinken;trank;getrunken\nnehmen;nahm;genommen\nschreiben;schrieb;geschrieben\nbleiben;blieb;geblieben\nschlafen;schlief;geschlafen\nsprechen;sprach;gesprochen\nlaufen;lief;gelaufen\ntragen;trug;getragen\nhelfen;half;geholfen\nwerfen;warf;geworfen\nbeginnen;begann;begonnen\ngewinnen;gewann;gewonnen\nverstehen;verstand;verstanden\nverlieren;verlor;verloren\nziehen;zog;gezogen\nfahren;fuhr;gefahren\nreiten;ritt;geritten\nsingen;sang;gesungen\nspringen;sprang;gesprungen\n`;
-
-    const sf = {
-      listEl: document.getElementById('sf-list'),
-      quizEl: document.getElementById('sf-quiz'),
-      sumEl: document.getElementById('sf-summary'),
-      startBtn: document.getElementById('sf-start'),
-      resetBtn: document.getElementById('sf-reset'),
-      results: [], deck: [], idx:0,
-      parse(){
-        const lines = this.listEl.value.split(/\r?\n/).map(l=>l.trim()).filter(Boolean);
-        const items=[]; for(const ln of lines){ const p=ln.split(';'); if(p.length<3) continue; items.push({inf:p[0].trim(), praet:p[1].split('|').map(s=>s.trim()), part2:p[2].split('|').map(s=>s.trim())}); }
-        return items;
-      },
-      isOk(u, sols){ const tol=document.getElementById('sf-tolerant').checked; const U=norm(u,tol); return sols.some(s=>norm(s,tol)===U); },
-      renderCard(){ const item=this.deck[this.idx]; const tol=document.getElementById('sf-tolerant').checked;
-        this.quizEl.innerHTML=`<div class="card"><div class="row" style="justify-content:space-between;align-items:center"><div><div class="small muted">Aufgabe ${this.idx+1} von ${this.deck.length}</div><div class="qbig">Infinitiv: <span style="color:#a5b4fc">${esc(item.inf)}</span></div></div><div class="pill">Toleranz: ${tol?'an':'aus'}</div></div><div class="grid grid2" style="margin-top:10px"><div><label>Präteritum</label><input id="sf-p" type="text" autocomplete="off"></div><div><label>Partizip II</label><input id="sf-pa" type="text" autocomplete="off"></div></div><div class="row" style="justify-content:flex-end;margin-top:10px">${this.idx>0?'<button class="btn" id="sf-back">Zurück</button>':''}<button class="btn primary" id="sf-check">Prüfen</button>${this.idx<this.deck.length-1?'':'<button class="btn" id="sf-finish">Beenden</button>'}</div><div id="sf-fb" style="margin-top:10px"></div></div>`;
-        document.getElementById('sf-check').onclick=()=>this.check();
-        const b=document.getElementById('sf-back'); if(b) b.onclick=()=>{ if(this.idx>0){ this.idx--; this.renderCard(); } };
-        const f=document.getElementById('sf-finish'); if(f) f.onclick=()=>this.finish();
-        document.getElementById('sf-p').addEventListener('keydown',e=>{if(e.key==='Enter') document.getElementById('sf-check').click();});
-        document.getElementById('sf-pa').addEventListener('keydown',e=>{if(e.key==='Enter') document.getElementById('sf-check').click();});
-        document.getElementById('sf-p').focus();
-      },
-      start(){ const items=this.parse(); if(!items.length){ alert('Wortliste ist leer.'); return; }
-        const n=Math.max(1, parseInt(document.getElementById('sf-count').value||'1',10));
-        this.deck=[...items]; if(document.getElementById('sf-shuffle').checked) shuffle(this.deck);
-        this.deck=this.deck.slice(0,Math.min(n,this.deck.length)); this.idx=0; this.results=[];
-        this.sumEl.style.display='none'; this.quizEl.style.display='block'; this.renderCard();
-      },
-      check(){ const it=this.deck[this.idx]; const p=document.getElementById('sf-p').value; const pa=document.getElementById('sf-pa').value; const okP=this.isOk(p,it.praet); const okPa=this.isOk(pa,it.part2);
-        this.results[this.idx]={ inf:it.inf, praet_ok:okP, praet_user:p, praet_solutions:[...it.praet], part2_ok:okPa, part2_user:pa, part2_solutions:[...it.part2], correct: okP && okPa };
-        const fb=document.getElementById('sf-fb'); fb.innerHTML=`<div class="hint"><div><span class="${okP?'ok':'bad'}">${okP?'✓ richtig':'✗ falsch'}</span> – Präteritum: <span class="muted">${esc(p||'—')}</span> <span class="small">(Lösung: ${it.praet.map(esc).join(' | ')})</span></div><div style="margin-top:6px"><span class="${okPa?'ok':'bad'}">${okPa?'✓ richtig':'✗ falsch'}</span> – Partizip II: <span class="muted">${esc(pa||'—')}</span> <span class="small">(Lösung: ${it.part2.map(esc).join(' | ')})</span></div></div>`;
-        const next=document.createElement('button'); next.className='btn'; next.textContent=this.idx<this.deck.length-1?'Weiter':'Zur Übersicht'; next.style.marginTop='8px'; next.onclick=()=>{ if(this.idx<this.deck.length-1){ this.idx++; this.renderCard(); } else { this.finish(); } };
-        fb.appendChild(next);
-      },
-      finish(){ this.quizEl.style.display='none'; const total=this.deck.length; const solved=this.results.filter(r=>r&&r.correct).length; const pct=Math.round(solved/total*100);
-        const rows=this.results.map((r,i)=>`<tr><td>${i+1}</td><td>${esc(r.inf)}</td><td class="${r.praet_ok?'ok':'bad'}">${r.praet_ok?'✓':'✗'}</td><td>${esc(r.praet_user||'—')}</td><td class="small">${r.praet_solutions.map(esc).join(' | ')}</td><td class="${r.part2_ok?'ok':'bad'}">${r.part2_ok?'✓':'✗'}</td><td>${esc(r.part2_user||'—')}</td><td class="small">${r.part2_solutions.map(esc).join(' | ')}</td></tr>`).join('');
-        this.sumEl.innerHTML=`<div class="card"><div class="row" style="justify-content:space-between;align-items:center"><div><div class="qbig">Ergebnis: ${solved}/${total} (${pct}%)</div><div class="muted small">${new Date().toLocaleString()}</div></div><div class="row"><button class="btn" id="sf-retry">Noch einmal</button><button class="btn primary" id="sf-export">CSV exportieren</button></div></div><div style="overflow:auto;margin-top:10px"><table class="table"><thead><tr><th>#</th><th>Infinitiv</th><th colspan="3">Präteritum</th><th colspan="3">Partizip II</th></tr></thead><tbody>${rows}</tbody></table></div></div>`;
-        this.sumEl.style.display='block';
-        document.getElementById('sf-retry').onclick=()=>this.start();
-        document.getElementById('sf-export').onclick=()=>this.exportCSV();
-      },
-      exportCSV(){ const name=(document.getElementById('sf-student').value||'ohneName').trim(); const tol=document.getElementById('sf-tolerant').checked?'an':'aus'; const total=this.deck.length; const solved=this.results.filter(r=>r&&r.correct).length; const pct=Math.round(solved/total*100);
-        const header=['Name','Zeit','Toleranz','Gesamt','Richtig','Prozent','#','Infinitiv','Prät_richtig','Prät_Eingabe','Prät_Lösungen','Part_richtig','Part_Eingabe','Part_Lösungen'];
-        const rows=this.results.map((r,i)=>[name,new Date().toISOString(),tol,total,solved,pct,i+1,r.inf,r.praet_ok?'1':'0',r.praet_user,r.praet_solutions.join(' | '),r.part2_ok?'1':'0',r.part2_user,r.part2_solutions.join(' | ')]);
-        const csv=[header,...rows].map(r=>r.map(v=>`"${String(v??'').replace(/"/g,'""')}"`).join(',')).join('\n');
-        const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8;'})); a.download=`stammformen_${name.replace(/\s+/g,'_')}_${new Date().toISOString().slice(0,10)}.csv`; document.body.appendChild(a); a.click(); a.remove();
-      }
-    };
-
-    // Bind list storage
-    const lsKey='dtb_stammformen_v1';
-    const listEl=sf.listEl; listEl.value = (ls(lsKey) && ls(lsKey).trim()) ? ls(lsKey) : SF_DEFAULT.trim();
-    document.getElementById('sf-saveList').onclick=()=>{ ls(lsKey, listEl.value.trim()); flash('Gespeichert.'); };
-    document.getElementById('sf-restoreList').onclick=()=>{ listEl.value=SF_DEFAULT.trim(); flash('Standardliste geladen.'); };
-    document.getElementById('sf-downloadList').onclick=()=>{ const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([listEl.value],{type:'text/plain;charset=utf-8;'})); a.download='stammformen_liste.txt'; document.body.appendChild(a); a.click(); a.remove(); };
+    // 1) Stammformen (Sets + Mail + Export)
+    const SF_DEFAULT=`finden;fand;gefunden\ngehen;ging;gegangen\nkommen;kam;gekommen\nsehen;sah;gesehen\nlesen;las;gelesen\nessen;aß|ass;gegessen\ntrinken;trank;getrunken\nnehmen;nahm;genommen\nschreiben;schrieb;geschrieben\nbleiben;blieb;geblieben\nschlafen;schlief;geschlafen\nsprechen;sprach;gesprochen\nlaufen;lief;gelaufen\ntragen;trug;getragen\nhelfen;half;geholfen\nwerfen;warf;geworfen\nbeginnen;begann;begonnen\ngewinnen;gewann;gewonnen\nverstehen;verstand;verstanden\nverlieren;verlor;verloren\nziehen;zog;gezogen\nfahren;fuhr;gefahren\nreiten;ritt;geritten\nsingen;sang;gesungen\nspringen;sprang;gesprungen\n`;
+    const sfList=document.getElementById('sf-list');
+    const sfSelect=document.getElementById('sf-setSelect');
+    const SF_STORAGE_KEY='dt_sets_v1';
+    function loadSets(){ const raw=localStorage.getItem(SF_STORAGE_KEY); let sets= raw? JSON.parse(raw): {"Standard":SF_DEFAULT.trim()}; sfSelect.innerHTML=''; Object.keys(sets).forEach(name=>{ const o=document.createElement('option'); o.value=name; o.textContent=name; sfSelect.appendChild(o); }); if(!sets[sfSelect.value]) sfSelect.value=Object.keys(sets)[0]; sfList.value=sets[sfSelect.value]; }
+    function saveSets(sets){ localStorage.setItem(SF_STORAGE_KEY, JSON.stringify(sets)); }
+    document.getElementById('sf-newSet').onclick=()=>{ const name=prompt('Name für neues Set:'); if(!name) return; const raw=localStorage.getItem(SF_STORAGE_KEY); const sets= raw? JSON.parse(raw): {}; if(sets[name]){ alert('Set existiert bereits.'); return; } sets[name]=sfList.value.trim()||SF_DEFAULT.trim(); saveSets(sets); loadSets(); sfSelect.value=name; };
+    document.getElementById('sf-saveSet').onclick=()=>{ const raw=localStorage.getItem(SF_STORAGE_KEY); const sets= raw? JSON.parse(raw): {}; const name=sfSelect.value||'Standard'; sets[name]=sfList.value.trim(); saveSets(sets); alert('Set gespeichert.'); };
+    document.getElementById('sf-delSet').onclick=()=>{ const name=sfSelect.value; if(!confirm('Set "'+name+'" löschen?')) return; const raw=localStorage.getItem(SF_STORAGE_KEY); const sets= raw? JSON.parse(raw): {}; delete sets[name]; if(Object.keys(sets).length===0) sets['Standard']=SF_DEFAULT.trim(); saveSets(sets); loadSets(); };
+    sfSelect.onchange=()=>{ const raw=localStorage.getItem(SF_STORAGE_KEY); const sets= raw? JSON.parse(raw): {}; sfList.value=sets[sfSelect.value]||''; };
+    document.getElementById('sf-downloadList').onclick=()=>{ const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([sfList.value],{type:'text/plain;charset=utf-8;'})); a.download='stammformen_liste.txt'; document.body.appendChild(a); a.click(); a.remove(); };
     document.getElementById('sf-uploadBtn').onclick=()=>document.getElementById('sf-uploadList').click();
-    document.getElementById('sf-uploadList').addEventListener('change',e=>{ const f=e.target.files?.[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ listEl.value=String(r.result||''); flash('Liste geladen.'); }; r.readAsText(f); });
-    document.getElementById('sf-start').onclick=()=>sf.start();
-    document.getElementById('sf-reset').onclick=()=>{ sf.results=[]; sf.quizEl.style.display='none'; sf.sumEl.style.display='none'; };
+    document.getElementById('sf-uploadList').addEventListener('change',e=>{ const f=e.target.files&&e.target.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ sfList.value=String(r.result||''); }; r.readAsText(f); });
+    function sfParse(){ const lines=sfList.value.split(/\r?\n/).map(l=>l.trim()).filter(Boolean); const items=[]; lines.forEach(ln=>{ const p=ln.split(';'); if(p.length<3) return; items.push({inf:p[0].trim(), praet:p[1].split('|').map(s=>s.trim()), part2:p[2].split('|').map(s=>s.trim())}); }); return items; }
+    function norm(s,tolerant){ if(!s) return ''; let x=String(s).trim(); if(tolerant){ x=x.toLowerCase().replace(/ß/g,'ss').replace(/\s+/g,' '); } return x; }
+    function isOk(u,sols,tol){ const U=norm(u,tol); return sols.some(s=>norm(s,tol)===U); }
+    let sfDeck=[], sfIdx=0, sfResults=[];
+    document.getElementById('sf-start').onclick=()=>{ const items=sfParse(); if(!items.length){ alert('Wortliste ist leer.'); return; } const n=Math.max(1, parseInt(document.getElementById('sf-count').value||'1',10)); sfDeck=[...items]; if(document.getElementById('sf-shuffle').checked) sfDeck.sort(()=>Math.random()-0.5); sfDeck=sfDeck.slice(0,Math.min(n,sfDeck.length)); sfIdx=0; sfResults=[]; document.getElementById('sf-summary').style.display='none'; document.getElementById('sf-quiz').style.display='block'; sfRender(); };
+    document.getElementById('sf-reset').onclick=()=>{ sfResults=[]; document.getElementById('sf-quiz').style.display='none'; document.getElementById('sf-summary').style.display='none'; };
+    function sfRender(){ const it=sfDeck[sfIdx]; const tol=document.getElementById('sf-tolerant').checked; const q=document.getElementById('sf-quiz'); q.innerHTML='<div class="card"><div class="row" style="justify-content:space-between;align-items:center"><div><div class="small muted">Aufgabe '+(sfIdx+1)+' von '+sfDeck.length+'</div><div class="qbig">Infinitiv: <span style="color:#a5b4fc">'+esc(it.inf)+'</span></div></div><div class="pill">Toleranz: '+(tol?'an':'aus')+'</div></div><div class="grid grid2" style="margin-top:10px"><div><label>Präteritum</label><input id="sf-p" type="text" autocomplete="off"></div><div><label>Partizip II</label><input id="sf-pa" type="text" autocomplete="off"></div></div><div class="row" style="justify-content:flex-end;margin-top:10px">'+(sfIdx>0?'<button class="btn" id="sf-back">Zurück</button>':'')+'<button class="btn primary" id="sf-check">Prüfen</button>'+(sfIdx<sfDeck.length-1?'':'<button class="btn" id="sf-finish">Beenden</button>')+'</div><div id="sf-fb" style="margin-top:10px"></div></div>'; document.getElementById('sf-check').onclick=sfCheck; var b=document.getElementById('sf-back'); if(b) b.onclick=function(){ if(sfIdx>0){ sfIdx--; sfRender(); } }; var f=document.getElementById('sf-finish'); if(f) f.onclick=sfFinish; document.getElementById('sf-p').addEventListener('keydown',e=>{ if(e.key==='Enter') document.getElementById('sf-check').click(); }); document.getElementById('sf-pa').addEventListener('keydown',e=>{ if(e.key==='Enter') document.getElementById('sf-check').click(); }); document.getElementById('sf-p').focus(); }
+    function sfCheck(){ const it=sfDeck[sfIdx]; const p=document.getElementById('sf-p').value; const pa=document.getElementById('sf-pa').value; const tol=document.getElementById('sf-tolerant').checked; const okP=isOk(p,it.praet,tol); const okPa=isOk(pa,it.part2,tol); sfResults[sfIdx]={inf:it.inf,praet_ok:okP,praet_user:p,praet_solutions:[...it.praet],part2_ok:okPa,part2_user:pa,part2_solutions:[...it.part2],correct: okP&&okPa}; const fb=document.getElementById('sf-fb'); fb.innerHTML='<div class="hint"><div><span class="'+(okP?'ok':'bad')+'">'+(okP?'✓ richtig':'✗ falsch')+'</span> – Präteritum: <span class="muted">'+esc(p||'—')+'</span> <span class="small">(Lösung: '+it.praet.map(esc).join(' | ')+')</span></div><div style="margin-top:6px"><span class="'+(okPa?'ok':'bad')+'">'+(okPa?'✓ richtig':'✗ falsch')+'</span> – Partizip II: <span class="muted">'+esc(pa||'—')+'</span> <span class="small">(Lösung: '+it.part2.map(esc).join(' | ')+')</span></div></div>'; const next=document.createElement('button'); next.className='btn'; next.textContent= sfIdx<sfDeck.length-1? 'Weiter':'Zur Übersicht'; next.style.marginTop='8px'; next.onclick=()=>{ if(sfIdx<sfDeck.length-1){ sfIdx++; sfRender(); } else { sfFinish(); } }; fb.appendChild(next); }
+    function sfFinish(){ const total=sfDeck.length; const solved=sfResults.filter(r=>r&&r.correct).length; const pct=Math.round(solved/total*100); const name=(document.getElementById('sf-student').value||'ohneName').trim(); const rows=sfResults.map((r,i)=>'<tr><td>'+(i+1)+'</td><td>'+esc(r.inf)+'</td><td class="'+(r.praet_ok?'ok':'bad')+'">'+(r.praet_ok?'✓':'✗')+'</td><td>'+esc(r.praet_user||'—')+'</td><td class="small">'+r.praet_solutions.map(esc).join(' | ')+'</td><td class="'+(r.part2_ok?'ok':'bad')+'">'+(r.part2_ok?'✓':'✗')+'</td><td>'+esc(r.part2_user||'—')+'</td><td class="small">'+r.part2_solutions.map(esc).join(' | ')+'</td></tr>').join(''); const sum=document.getElementById('sf-summary'); sum.innerHTML='<div class="card"><div class="row" style="justify-content:space-between;align-items:center"><div><div class="qbig">Ergebnis: '+solved+'/'+total+' ('+pct+'%)</div><div class="muted small">'+new Date().toLocaleString()+'</div></div><div class="row"><button class="btn" id="sf-retry">Noch einmal</button><button class="btn primary" id="sf-export">CSV exportieren</button><button class="btn" id="sf-email">Per E‑Mail senden</button></div></div><div style="overflow:auto;margin-top:10px"><table class="table"><thead><tr><th>#</th><th>Infinitiv</th><th colspan="3">Präteritum</th><th colspan="3">Partizip II</th></tr></thead><tbody>'+rows+'</tbody></table></div></div>'; sum.style.display='block'; document.getElementById('sf-quiz').style.display='none'; document.getElementById('sf-retry').onclick=()=>document.getElementById('sf-start').click(); document.getElementById('sf-export').onclick=()=>{ const header=['Name','Zeit','Gesamt','Richtig','Prozent','#','Infinitiv','Prät_richtig','Prät_Eingabe','Prät_Lösungen','Part_richtig','Part_Eingabe','Part_Lösungen']; const csv=[header].concat(sfResults.map((r,i)=>[name,new Date().toISOString(),total,solved,pct,i+1,r.inf,r.praet_ok?'1':'0',r.praet_user,r.praet_solutions.join(' | '),r.part2_ok?'1':'0',r.part2_user,r.part2_solutions.join(' | ')])).map(row=>row.map(v=>'"'+String(v==null?'':v).replace(/"/g,'""')+'"').join(',')).join('\n'); const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8;'})); a.download='stammformen_'+name.replace(/\s+/g,'_')+'_'+new Date().toISOString().slice(0,10)+'.csv'; document.body.appendChild(a); a.click(); a.remove(); }; document.getElementById('sf-email').onclick=()=>{ const subject=encodeURIComponent(name+' – '+pct+'% Stammformen'); let body='Ergebnis Stammformen\nName: '+name+'\nDatum: '+new Date().toLocaleString()+'\nScore: '+solved+'/'+total+' ('+pct+'%)\n\n#\tInfinitiv\tPrät_ok\tPrät_Eingabe\tPart_ok\tPart_Eingabe\n'; sfResults.forEach((r,i)=>{ body+=(i+1)+'\t'+r.inf+'\t'+(r.praet_ok?'1':'0')+'\t'+(r.praet_user||'')+'\t'+(r.part2_ok?'1':'0')+'\t'+(r.part2_user||'')+'\n'; }); const mail='mailto:benedict.deiss@magwien.gv.at?subject='+subject+'&body='+encodeURIComponent(body); window.location.href=mail; }; }
+    loadSets();
 
-    // ==================================================
-    // 2) CLOCK
-    // ==================================================
-    function pad(n){return String(n).padStart(2,'0');}
-    function tickClock(){ const d=new Date(); const t=`${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`; document.getElementById('clock-time').textContent=t; document.getElementById('clock-date').textContent=d.toLocaleDateString(undefined,{weekday:'long',year:'numeric',month:'long',day:'numeric'}); }
+    // 2) Clock
+    function tickClock(){ const d=new Date(); const t=pad(d.getHours())+':'+pad(d.getMinutes())+':'+pad(d.getSeconds()); document.getElementById('clock-time').textContent=t; document.getElementById('clock-date').textContent=d.toLocaleDateString(undefined,{weekday:'long',year:'numeric',month:'long',day:'numeric'}); }
     setInterval(tickClock,250); tickClock();
 
-    // ==================================================
-    // 3) STOPWATCH
-    // ==================================================
-    const swDisp=document.getElementById('sw-display'); const swTable=document.querySelector('#sw-laps tbody');
-    let swStart=0, swRunning=false, swElapsed=0, swTimer=null, swLap=0;
-    function fmtMs(ms){ const m=Math.floor(ms/60000); const s=Math.floor((ms%60000)/1000); const t=ms%1000; return `${pad(m)}:${pad(s)}.${String(t).padStart(3,'0')}`; }
-    function swRender(){ const now=swRunning?Date.now():swStart; const ms=swRunning?(swElapsed + (Date.now()-swStart)):swElapsed; swDisp.textContent=fmtMs(ms); }
-    function swTick(){ if(!swRunning) return; const ms=swElapsed + (Date.now()-swStart); swDisp.textContent=fmtMs(ms); }
-    document.getElementById('sw-start').onclick=()=>{ if(!swRunning){ swRunning=true; swStart=Date.now(); swTimer=setInterval(swTick,31); document.getElementById('sw-start').textContent='Stopp'; } else { swElapsed += Date.now()-swStart; swRunning=false; clearInterval(swTimer); document.getElementById('sw-start').textContent='Start'; } };
-    document.getElementById('sw-reset').onclick=()=>{ swRunning=false; clearInterval(swTimer); swElapsed=0; swLap=0; swTable.innerHTML=''; swRender(); document.getElementById('sw-start').textContent='Start'; };
-    document.getElementById('sw-lap').onclick=()=>{ const ms=swRunning?(swElapsed + (Date.now()-swStart)):swElapsed; const tr=document.createElement('tr'); tr.innerHTML=`<td>${++swLap}</td><td>${fmtMs(ms)}</td>`; swTable.appendChild(tr); };
-    swRender();
+    // 3) Stopwatch with lap names
+    const swDisp=document.getElementById('sw-display'); const swTable=document.querySelector('#sw-laps tbody'); let swStart=0, swRunning=false, swElapsed=0, swTimer=null, swLap=0; function fmtMs(ms){ const m=Math.floor(ms/60000), s=Math.floor((ms%60000)/1000), t=ms%1000; return pad(m)+':'+pad(s)+'.'+String(t).padStart(3,'0'); } function swTick(){ if(!swRunning) return; const ms=swElapsed + (Date.now()-swStart); swDisp.textContent=fmtMs(ms); } document.getElementById('sw-start').onclick=()=>{ if(!swRunning){ swRunning=true; swStart=Date.now(); swTimer=setInterval(swTick,31); document.getElementById('sw-start').textContent='Stopp'; } else { swElapsed += Date.now()-swStart; swRunning=false; clearInterval(swTimer); document.getElementById('sw-start').textContent='Start'; } }; document.getElementById('sw-reset').onclick=()=>{ swRunning=false; clearInterval(swTimer); swElapsed=0; swLap=0; swTable.innerHTML=''; swDisp.textContent='00:00.000'; document.getElementById('sw-start').textContent='Start'; }; document.getElementById('sw-lap').onclick=()=>{ const ms=swRunning? (swElapsed + (Date.now()-swStart)) : swElapsed; const name=(document.getElementById('sw-lapName').value||'').trim(); const tr=document.createElement('tr'); tr.innerHTML='<td>'+(++swLap)+'</td><td>'+esc(name||'-')+'</td><td>'+fmtMs(ms)+'</td>'; swTable.appendChild(tr); };
 
-    // ==================================================
-    // 4) COUNTDOWN
-    // ==================================================
-    let cdTimer=null, cdRemain=0; const cdDisp=document.getElementById('cd-display');
-    function cdUpdate(){ const m=Math.floor(cdRemain/60), s=cdRemain%60; cdDisp.textContent=`${pad(m)}:${pad(s)}`; if(cdRemain<=0){ clearInterval(cdTimer); cdTimer=null; flash('Zeit abgelaufen!'); new AudioContext().resume?.(); try{ const ctx=new(window.AudioContext||window.webkitAudioContext)(); const o=ctx.createOscillator(); const g=ctx.createGain(); o.type='sine'; o.frequency.value=880; o.connect(g); g.connect(ctx.destination); o.start(); setTimeout(()=>{o.stop(); ctx.close();},500);}catch(e){} }
-    }
-    document.getElementById('cd-start').onclick=()=>{ const m=Math.max(0,parseInt(document.getElementById('cd-min').value||'0',10)); const s=Math.max(0,parseInt(document.getElementById('cd-sec').value||'0',10)); cdRemain=m*60+s; clearInterval(cdTimer); cdTimer=setInterval(()=>{ cdRemain--; cdUpdate(); },1000); cdUpdate(); };
-    document.getElementById('cd-reset').onclick=()=>{ clearInterval(cdTimer); cdTimer=null; const m=Math.max(0,parseInt(document.getElementById('cd-min').value||'0',10)); const s=Math.max(0,parseInt(document.getElementById('cd-sec').value||'0',10)); cdRemain=m*60+s; cdUpdate(); };
-    cdUpdate();
+    // 4) Countdown
+    let cdTimer=null, cdRemain=0; const cdDisp=document.getElementById('cd-display'); function cdUpdate(){ const m=Math.floor(cdRemain/60), s=cdRemain%60; cdDisp.textContent=pad(m)+':'+pad(s); if(cdRemain<=0){ clearInterval(cdTimer); cdTimer=null; alert('Zeit abgelaufen!'); } } document.getElementById('cd-start').onclick=()=>{ const m=Math.max(0,parseInt(document.getElementById('cd-min').value||'0',10)); const s=Math.max(0,parseInt(document.getElementById('cd-sec').value||'0',10)); cdRemain=m*60+s; clearInterval(cdTimer); cdTimer=setInterval(()=>{ cdRemain--; cdUpdate(); },1000); cdUpdate(); }; document.getElementById('cd-reset').onclick=()=>{ clearInterval(cdTimer); cdTimer=null; const m=Math.max(0,parseInt(document.getElementById('cd-min').value||'0',10)); const s=Math.max(0,parseInt(document.getElementById('cd-sec').value||'0',10)); cdRemain=m*60+s; cdUpdate(); };
 
-    // ==================================================
-    // 5) NAMES
-    // ==================================================
-    const NG_KEY='dtb_names_v1';
-    const ngList=document.getElementById('ng-list'); const ngNoRep=document.getElementById('ng-noRepeat'); const ngPicked=document.getElementById('ng-picked'); const ngRemaining=document.getElementById('ng-remaining');
-    ngList.value = ls(NG_KEY) || '';
-    document.getElementById('ng-save').onclick=()=>{ ls(NG_KEY, ngList.value.trim()); flash('Namensliste gespeichert.'); };
-    document.getElementById('ng-clear').onclick=()=>{ ngList.value=''; ls(NG_KEY,''); };
-    let used=new Set();
-    function names(){ return ngList.value.split(/\r?\n/).map(s=>s.trim()).filter(Boolean); }
-    function updateRemaining(){ const total=names(); const rem=total.filter(n=>!used.has(n)); ngRemaining.textContent=`Übrig: ${rem.length}/${total.length}`; }
-    document.getElementById('ng-pick').onclick=()=>{ const all=names(); if(!all.length){ flash('Liste ist leer.'); return; } let pool=all; if(ngNoRep.checked){ pool=all.filter(n=>!used.has(n)); if(!pool.length){ used.clear(); pool=[...all]; }
-      }
-      const name=pool[Math.floor(Math.random()*pool.length)]; ngPicked.textContent=name; if(ngNoRep.checked) used.add(name); updateRemaining(); };
-    document.getElementById('ng-reset').onclick=()=>{ used.clear(); ngPicked.textContent='—'; updateRemaining(); };
-    updateRemaining();
-    document.getElementById('ng-groups').onclick=()=>{ const size=Math.max(2,parseInt(document.getElementById('ng-gsize').value||'2',10)); const arr=names(); if(arr.length<size){ flash('Zu wenige Namen.'); return; } const pool=[...arr]; shuffle(pool); const groups=[]; while(pool.length){ groups.push(pool.splice(0,size)); }
-      const out=groups.map((g,i)=>`<div class="hint" style="margin:6px 0"><b>Gruppe ${i+1}</b><br>${g.map(esc).join(', ')}</div>`).join(''); document.getElementById('ng-groupsOut').innerHTML=out; };
+    // 5) Names & groups with conflicts
+    const ngList=document.getElementById('ng-list'); const ngPicked=document.getElementById('ng-picked'); const noRep=document.getElementById('ng-noRepeat'); let used=new Set(); function names(){ return ngList.value.split(/\r?\n/).map(s=>s.trim()).filter(Boolean); } function updateRemaining(){} document.getElementById('ng-pick').onclick=()=>{ const all=names(); if(!all.length){ alert('Liste ist leer.'); return; } let pool=all; if(noRep.checked){ pool=all.filter(n=>!used.has(n)); if(!pool.length){ used.clear(); pool=[...all]; } } const name=pool[Math.floor(Math.random()*pool.length)]; if(noRep.checked) used.add(name); ngPicked.textContent='Gewählt: '+name; }; document.getElementById('ng-reset').onclick=()=>{ used.clear(); ngPicked.textContent='—'; };
+    function parseConflicts(){ const lines=(document.getElementById('ng-conflicts').value||'').split(/\r?\n/).map(l=>l.trim()).filter(Boolean); const pairs=[]; lines.forEach(ln=>{ const m=ln.split(',').map(s=>s.trim()).filter(Boolean); if(m.length===2) pairs.push([m[0],m[1]]); }); return pairs; }
+    function violates(group,pairs){ for(let i=0;i<pairs.length;i++){ const a=pairs[i][0], b=pairs[i][1]; if(group.includes(a)&&group.includes(b)) return true; } return false; }
+    document.getElementById('ng-groups').onclick=()=>{ const size=Math.max(2,parseInt(document.getElementById('ng-gsize').value||'2',10)); const arr=names(); if(arr.length<size){ alert('Zu wenige Namen.'); return; } const pairs=parseConflicts(); let best=null; for(let tries=0; tries<1000; tries++){ const pool=[...arr]; pool.sort(()=>Math.random()-0.5); const gs=[]; while(pool.length){ gs.push(pool.splice(0,size)); } if(gs.every(g=>!violates(g,pairs))){ best=gs; break; } for(let i=0;i<gs.length;i++){ for(let j=i+1;j<gs.length;j++){ for(let a=0;a<gs[i].length;a++){ for(let b=0;b<gs[j].length;b++){ const gi=[...gs[i]], gj=[...gs[j]]; const tmp=gi[a]; gi[a]=gj[b]; gj[b]=tmp; if(!violates(gi,pairs) && !violates(gj,pairs)){ gs[i]=gi; gs[j]=gj; } } } } } if(gs.every(g=>!violates(g,pairs))){ best=gs; break; } } const out=(best||[]).map((g,i)=>'<div class="hint" style="margin:6px 0"><b>Gruppe '+(i+1)+'</b><br>'+g.map(esc).join(', ')+'</div>').join(''); document.getElementById('ng-groupsOut').innerHTML= out || '<div class="small">Keine konfliktfreie Gruppierung gefunden. Passe Konflikte/Gruppengröße an.</div>'; };
 
-    // ==================================================
-    // 6) CLOZE (Lückentext)
-    // ==================================================
-    const czOut=document.getElementById('cz-output'); let czKeyVisible=false; let czLast=null;
-    function tokenizeWords(text){ return text.match(/[A-Za-zÄÖÜäöüßÀ-ÖØ-öø-ÿ]+|[^\sA-Za-zÄÖÜäöüßÀ-ÖØ-öø-ÿ]+/g) || []; }
-    function makeCloze(){ const text=document.getElementById('cz-input').value; if(!text.trim()){ flash('Bitte Text einfügen.'); return; }
-      const pct=Math.max(0,Math.min(90,parseInt(document.getElementById('cz-pct').value||'20',10))); const minlen=Math.max(2,parseInt(document.getElementById('cz-minlen').value||'4',10));
-      const toks=tokenizeWords(text); const wordsIdx=[]; toks.forEach((t,i)=>{ if(/^[A-Za-zÄÖÜäöüßÀ-ÖØ-öø-ÿ]+$/.test(t) && t.length>=minlen) wordsIdx.push(i); });
-      shuffle(wordsIdx); const blanks=Math.floor(wordsIdx.length*pct/100); const chosen=new Set(wordsIdx.slice(0,blanks));
-      const key=[]; const worksheet=toks.map((t,i)=>{ if(chosen.has(i)){ key.push(t); const line = '_'.repeat(Math.max(4, Math.min( t.length+1, 20))); return line; } return t; }).join('');
-      czLast={worksheet, key}; czKeyVisible=false; renderCloze(); }
-    function renderCloze(){ if(!czLast){ czOut.textContent=''; return; } czOut.innerHTML = `<div style="white-space:pre-wrap">${esc(czLast.worksheet)}</div>` + (czKeyVisible? `<hr><div class="small"><b>Lösung:</b> ${czLast.key.map(esc).join(' / ')}</div>`: ''); }
-    document.getElementById('cz-make').onclick=makeCloze;
-    document.getElementById('cz-showKey').onclick=()=>{ czKeyVisible=!czKeyVisible; renderCloze(); };
-    document.getElementById('cz-copy').onclick=()=>{ if(!czLast){ return; } navigator.clipboard.writeText(czLast.worksheet).then(()=>flash('In Zwischenablage kopiert.')); };
-    document.getElementById('cz-print').onclick=()=>{ const w=window.open('','print'); const html=`<pre style="font-family:system-ui,Arial;white-space:pre-wrap">${esc(czLast?czLast.worksheet:'')}</pre>`; w.document.write(html); w.document.close(); w.focus(); w.print(); w.close(); };
+    // 6) Cloze (preserve formatting)
+    let czState=null, czShow=false; function czTokenize(text){ return text.match(/[A-Za-zÄÖÜäöüßÀ-ÖØ-öø-ÿ]+|\s+|[^\sA-Za-zÄÖÜäöüßÀ-ÖØ-öø-ÿ]/g) || []; }
+    document.getElementById('cz-make').onclick=()=>{ const text=document.getElementById('cz-input').value; if(!text.trim()){ alert('Bitte Text einfügen.'); return; } const pct=Math.max(0,Math.min(90,parseInt(document.getElementById('cz-pct').value||'20',10))); const minlen=Math.max(2,parseInt(document.getElementById('cz-minlen').value||'4',10)); const toks=czTokenize(text); const wordsIdx=[]; toks.forEach((t,i)=>{ if(/^[A-Za-zÄÖÜäöüßÀ-ÖØ-öø-ÿ]+$/.test(t) && t.length>=minlen) wordsIdx.push(i); }); shuffle(wordsIdx); const blanks=Math.floor(wordsIdx.length*pct/100); const chosen=new Set(wordsIdx.slice(0,blanks)); const key=[]; const worksheet=toks.map((t,i)=>{ if(chosen.has(i)){ key.push(t); return '_'.repeat(Math.max(4, Math.min(t.length+1, 24))); } return t; }).join(''); czState={worksheet,key}; renderCloze(); };
+    function renderCloze(){ const out=document.getElementById('cz-output'); if(!czState){ out.textContent=''; return; } out.innerHTML='<div style="white-space:pre-wrap">'+esc(czState.worksheet)+'</div>' + (czShow? '<hr><div class="small"><b>Lösung:</b> '+czState.key.map(esc).join(' / ')+'</div>': ''); }
+    document.getElementById('cz-showKey').onclick=()=>{ czShow=!czShow; renderCloze(); };
+    document.getElementById('cz-copy').onclick=()=>{ if(!czState) return; navigator.clipboard.writeText(czState.worksheet); };
+    document.getElementById('cz-print').onclick=()=>{ const w=window.open('','print'); const html='<pre style="font-family:system-ui,Arial;white-space:pre-wrap">'+esc(czState?czState.worksheet:'')+'</pre>'; w.document.write(html); w.document.close(); w.focus(); w.print(); w.close(); };
 
-    // ==================================================
-    // 7) SCRAMBLER (Satzbau)
-    // ==================================================
-    function splitChunks(sentence, keepPunct){
-      const parts = sentence.split(/(,|;|:|\.|!|\?|—|–)/).filter(s=>s!==undefined && s!=='' );
-      if(keepPunct){
-        // Keep punctuation tokens but don't scramble them with words
-        let words=[]; let punct=[]; let buf='';
-        for(let i=0;i<parts.length;i++){
-          const t=parts[i];
-          if(/[,:;.!?—–]/.test(t)) { if(buf.trim()) { words.push(buf.trim()); buf=''; } punct.push(t); }
-          else { buf+=(t+' '); }
-        }
-        if(buf.trim()) words.push(buf.trim());
-        return {words, punct};
-      } else {
-        return {words: sentence.split(/\s+/).filter(Boolean), punct: []};
-      }
-    }
-    function makeScramble(){ const keep=document.getElementById('sb-keepPunct').checked; const lines=document.getElementById('sb-input').value.split(/\r?\n/).map(s=>s.trim()).filter(Boolean); if(!lines.length){ flash('Bitte Sätze eingeben.'); return; }
-      const out=lines.map((line,i)=>{ const {words} = splitChunks(line, keep); const mix=[...words]; shuffle(mix); return `<div class="hint" style="margin:6px 0"><b>Aufgabe ${i+1}:</b><br>${esc(mix.join(' | '))}</div>`; }).join('');
-      document.getElementById('sb-output').innerHTML=out; }
-    document.getElementById('sb-make').onclick=makeScramble;
-    document.getElementById('sb-print').onclick=()=>{ const html=`<div style="font-family:system-ui,Arial">${document.getElementById('sb-output').innerHTML}</div>`; const w=window.open('','print'); w.document.write(html); w.document.close(); w.focus(); w.print(); w.close(); };
+    // 7) Satzglied‑Tester
+    document.getElementById('sg-make').onclick=()=>{ const lines=document.getElementById('sg-input').value.split(/\r?\n/).map(s=>s.trim()).filter(Boolean); if(!lines.length){ alert('Bitte Eingabe ergänzen.'); return; } const out=lines.map((line,i)=>{ const parts=line.split('|').map(s=>s.trim()).filter(Boolean); const mix=[...parts]; shuffle(mix); return '<div class="hint" style="margin:6px 0"><b>Aufgabe '+(i+1)+':</b><br>'+mix.map(p=>'<span style="display:inline-block;margin:3px 4px;padding:4px 8px;border:1px solid rgba(255,255,255,.2);border-radius:8px">'+esc(p)+'</span>').join('')+'<div class="small" style="margin-top:6px"><details><summary>Lösung</summary>'+parts.map(esc).join('  →  ')+'</details></div></div>'; }).join(''); document.getElementById('sg-output').innerHTML=out; };
+    document.getElementById('sg-print').onclick=()=>{ const html='<div style="font-family:system-ui,Arial">'+document.getElementById('sg-output').innerHTML+'</div>'; const w=window.open('','print'); w.document.write(html); w.document.close(); w.focus(); w.print(); w.close(); };
 
-    // ==================================================
-    // 8) TEXT STATS
-    // ==================================================
-    function analyze(){ const t=document.getElementById('ts-input').value; const words=(t.match(/[A-Za-zÄÖÜäöüßÀ-ÖØ-öø-ÿ]+/g)||[]); const sentences=(t.match(/[.!?]+/g)||[]); const chars=(t.replace(/\s/g,'').length);
-      // Syllables (rough): count vowel groups
-      const syl=words.reduce((acc,w)=>{ const m=w.toLowerCase().match(/[aeiouyäöü]+/g); return acc + (m?m.length:1); },0); const avgSyl=words.length? (syl/words.length):0;
-      document.getElementById('ts-words').textContent=words.length; document.getElementById('ts-sent').textContent=sentences.length; document.getElementById('ts-chars').textContent=chars; document.getElementById('ts-syll').textContent=avgSyl.toFixed(2);
-      // Top words (stoplist basic)
-      const stop=new Set(['der','die','das','und','oder','zu','in','den','des','dem','ein','eine','einer','mit','auf','für','ist','sind','war','waren','wie','ich','du','er','sie','es','wir','ihr','man','nicht','auch','aber','noch','am','im','an','vom','vom','beim','beim','um','so','nur','wenn','weil','dass','daß','als']);
-      const freq={}; words.forEach(w=>{ const k=w.toLowerCase(); if(stop.has(k)) return; freq[k]=(freq[k]||0)+1; });
-      const top=Object.entries(freq).sort((a,b)=>b[1]-a[1]).slice(0,15).map(([w,c])=>`${esc(w)} (${c})`).join(', ');
-      document.getElementById('ts-top').innerHTML=top||'<span class="muted">—</span>';
-    }
-    document.getElementById('ts-analyze').onclick=analyze;
+    // 8) Text‑Analyse (direct speech)
+    document.getElementById('ts-analyze').onclick=()=>{ const t=document.getElementById('ts-input').value; const words=(t.match(/[A-Za-zÄÖÜäöüßÀ-ÖØ-öø-ÿ]+/g)||[]); const sentences=(t.match(/[.!?]+/g)||[]); const chars=(t.replace(/\s/g,'').length); const syl=words.reduce((acc,w)=>{ const m=w.toLowerCase().match(/[aeiouyäöü]+/g); return acc + (m?m.length:1); },0); const avgSyl=words.length? (syl/words.length):0; document.getElementById('ts-words').textContent=words.length; document.getElementById('ts-sent').textContent=sentences.length; document.getElementById('ts-chars').textContent=chars; document.getElementById('ts-syll').textContent=avgSyl.toFixed(2); const stop=new Set(['der','die','das','und','oder','zu','in','den','des','dem','ein','eine','einer','mit','auf','für','ist','sind','war','waren','wie','ich','du','er','sie','es','wir','ihr','man','nicht','auch','aber','noch','am','im','an','vom','beim','um','so','nur','wenn','weil','dass','daß','als']); const freq={}; words.forEach(w=>{ const k=w.toLowerCase(); if(stop.has(k)) return; freq[k]=(freq[k]||0)+1; }); const top=Object.entries(freq).sort((a,b)=>b[1]-a[1]).slice(0,15).map(([w,c])=>esc(w)+' ('+c+')').join(', '); document.getElementById('ts-top').innerHTML=top||'<span class="muted">—</span>'; const quoteRegex=/[„»"\u201E\u00BB](.*?)[“«"\u201C\u00AB]/gs; const found=[]; let m; while((m=quoteRegex.exec(t))!==null){ const s=m[1].trim(); if(s) found.push(s); } document.getElementById('ts-quotes').innerHTML = found.slice(0,10).map(q=>'<div class="hint" style="margin:4px 0">'+esc(q)+'</div>').join('') || '<span class="muted small">—</span>'; };
 
-    // ==================================================
-    // 9) DICTATION (SpeechSynthesis)
-    // ==================================================
-    let dkVoices=[]; function loadVoices(){ dkVoices = window.speechSynthesis.getVoices(); }
+    // 9) Dictation (SpeechSynthesis)
+    let dkVoices=[]; function loadVoices(){ dkVoices=window.speechSynthesis.getVoices(); }
     loadVoices(); if(speechSynthesis.onvoiceschanged!==undefined){ speechSynthesis.onvoiceschanged=loadVoices; }
-    let dkStop=false;
-    async function speakLine(line, rate){ return new Promise(res=>{ const u=new SpeechSynthesisUtterance(line); const deVoice = dkVoices.find(v=>/de|german/i.test(v.lang)); if(deVoice) u.voice=deVoice; u.rate=rate; u.onend=()=>res(); speechSynthesis.speak(u); }); }
-    document.getElementById('dk-start').onclick=async()=>{ const txt=document.getElementById('dk-input').value.trim(); if(!txt){ flash('Bitte Text eingeben.'); return; } const lines=txt.split(/\r?\n/).filter(Boolean); const rate=parseFloat(document.getElementById('dk-rate').value||'1'); const pause=parseFloat(document.getElementById('dk-pause').value||'2'); dkStop=false; document.getElementById('dk-status').textContent='Läuft…';
-      for(const ln of lines){ if(dkStop) break; await speakLine(ln, rate); if(dkStop) break; await new Promise(r=>setTimeout(r, pause*1000)); }
-      document.getElementById('dk-status').textContent= dkStop ? 'Gestoppt' : 'Fertig'; };
-    document.getElementById('dk-stop').onclick=()=>{ dkStop=true; window.speechSynthesis.cancel(); document.getElementById('dk-status').textContent='Gestoppt'; };
+    document.getElementById('dk-start').onclick=async()=>{ const txt=document.getElementById('dk-input').value.trim(); if(!txt){ alert('Bitte Text eingeben.'); return; } const lines=txt.split(/\r?\n/).filter(Boolean); const rate=parseFloat(document.getElementById('dk-rate').value||'0.9'); const pause=parseFloat(document.getElementById('dk-pause').value||'2'); document.getElementById('dk-status').textContent='Läuft…'; for(let i=0;i<lines.length;i++){ const ln=lines[i]; await speakLine(ln, rate); await new Promise(r=>setTimeout(r, pause*1000)); } document.getElementById('dk-status').textContent='Fertig'; };
+    document.getElementById('dk-stop').onclick=()=>{ window.speechSynthesis.cancel(); document.getElementById('dk-status').textContent='Gestoppt'; };
+    function speakLine(line, rate){ return new Promise(res=>{ const u=new SpeechSynthesisUtterance(line); const de=dkVoices.find(v=>/de|german/i.test(v.lang)); if(de) u.voice=de; u.rate=rate; u.onend=()=>res(); speechSynthesis.speak(u); }); }
   </script>
 </body>
 </html>
+
 
