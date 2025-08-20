@@ -1,25 +1,410 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <link rel="stylesheet" href="style.css">
-        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;1,300&family=Roboto:wght@100;300;400;500;700&display=swap" rel="stylesheet">
-        <title>Meine Website</title>
-    </head>
-    <body>
-        <h1>Hello</h1>
-        <img src="img/1.jpeg" alt="My test image">
-        <a href="http://www.klavierunterricht-deiss.at">LINK</a>
-        <p>Naja, nicht viel. Und bei dir? Normalerwe Lorem ipsum dolor, sit amet consectetur adipisicing elit. Consequatur similique cum neque perferendis nesciunt dolores aliquid sit accusamus ratione minus. Vero mollitia perferendis illo accusamus dolorem eaque nam hic iste.</p>
-        <ul>
-            <li>Hallo</li>
-            <li>Wie geht es dir?</li>
-            <li>Wie geht es dir?</li>
-            <li>Wie geht es dir?</li> 
-            <li><a href="/stammformen.html">STAMMFORMEN</a></li>
-        </ul>
 
-<button>Change user</button>
-        <script src="scripts/main.js"></script>
-    </body>
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Stammformen‑Trainer</title>
+  <style>
+    :root { --bg:#0b1020; --card:#131a33; --muted:#94a3b8; --text:#e5e7eb; --ok:#16a34a; --bad:#dc2626; --accent:#4f46e5; }
+    html,body { height:100%; }
+    body { margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Inter,Arial,sans-serif; background:linear-gradient(180deg,#0b1020,#0b1226 40%,#0c132a); color:var(--text); }
+    .wrap { max-width:900px; margin:24px auto; padding:0 16px 48px; }
+    .title { font-size:clamp(20px,4vw,32px); font-weight:800; letter-spacing:0.2px; display:flex; gap:12px; align-items:center; }
+    .title small{ font-weight:500; color:var(--muted); }
+    .card { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:16px; padding:18px; box-shadow:0 6px 30px rgba(0,0,0,0.2); }
+    .grid { display:grid; grid-template-columns:1fr; gap:16px; }
+    @media (min-width:860px){ .grid{ grid-template-columns: 1.1fr 0.9fr; } }
+    label{ display:block; font-weight:600; margin-bottom:6px; }
+    input[type="text"], input[type="number"], textarea, select { width:100%; padding:10px 12px; border-radius:10px; border:1px solid rgba(255,255,255,0.12); background:#0e1530; color:var(--text); outline:none; }
+    textarea{ min-height:160px; font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size:14px; }
+    .row{ display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
+    .btn { display:inline-flex; align-items:center; gap:8px; padding:10px 14px; border-radius:12px; border:1px solid rgba(255,255,255,0.14); background:#0f1736; color:var(--text); cursor:pointer; font-weight:700; }
+    .btn.primary{ background:linear-gradient(180deg,#4f46e5,#4338ca); border-color:#6366f1; }
+    .btn.ghost{ background:transparent; }
+    .pill{ padding:6px 10px; border-radius:999px; background:#0e1634; border:1px solid rgba(255,255,255,0.12); font-size:12px; color:var(--muted); }
+    .muted{ color:var(--muted); }
+    .status{ font-weight:800; }
+    .ok{ color:var(--ok); }
+    .bad{ color:var(--bad); }
+    .qcard{ padding:20px; border-radius:16px; background:#0f1838; border:1px solid rgba(255,255,255,0.12); }
+    .qhead{ display:flex; justify-content:space-between; align-items:center; gap:12px; }
+    .qbig{ font-size:clamp(20px,4vw,28px); font-weight:800; }
+    .qsub{ color:var(--muted); font-weight:600; }
+    .qinputs{ display:grid; grid-template-columns:1fr; gap:12px; margin-top:14px; }
+    @media(min-width:720px){ .qinputs{ grid-template-columns:1fr 1fr; } }
+    .resultline{ padding:10px 12px; border-radius:10px; background:#0e1532; border:1px dashed rgba(255,255,255,0.12); }
+    .small{ font-size:12px; }
+    .table{ width:100%; border-collapse:collapse; font-size:14px; }
+    .table th,.table td{ border-bottom:1px solid rgba(255,255,255,0.08); padding:8px 6px; text-align:left; }
+    .foot{ margin-top:14px; display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="title">🧠 Stammformen‑Trainer <small>Infinitiv → Präteritum → Partizip II</small></div>
+
+    <div class="grid">
+      <!-- Left: Trainer -->
+      <div class="card" id="trainerCard">
+        <div class="row" style="justify-content:space-between; align-items:flex-end; margin-bottom:8px;">
+          <div style="flex:1; min-width:220px;">
+            <label for="student">Name (optional, für Export)</label>
+            <input id="student" type="text" placeholder="Vorname Nachname" />
+          </div>
+          <div>
+            <label for="count">Anzahl Aufgaben</label>
+            <input id="count" type="number" min="1" value="10" style="width:110px;" />
+          </div>
+        </div>
+
+        <div class="row" style="justify-content:space-between;">
+          <div class="row">
+            <label class="pill"><input id="tolerant" type="checkbox" checked style="transform:translateY(1.5px); margin-right:8px;"> Toleranz: Groß/Klein & ß/ss</label>
+            <label class="pill"><input id="shuffle" type="checkbox" checked style="transform:translateY(1.5px); margin-right:8px;"> Zufällige Reihenfolge</label>
+          </div>
+          <div class="row">
+            <button class="btn primary" id="startBtn">Start</button>
+            <button class="btn ghost" id="resetBtn">Zurücksetzen</button>
+          </div>
+        </div>
+
+        <div id="quizArea" style="margin-top:16px; display:none;"></div>
+        <div id="summaryArea" style="margin-top:16px; display:none;"></div>
+      </div>
+
+      <!-- Right: Wortliste / Verwaltung -->
+      <div class="card">
+        <div class="row" style="justify-content:space-between; align-items:center;">
+          <div style="font-weight:800;">Wortliste</div>
+          <div class="row">
+            <button class="btn" id="saveList">Liste speichern</button>
+            <button class="btn ghost" id="restoreList">Standard laden</button>
+          </div>
+        </div>
+        <p class="muted small">Format: <code>Infinitiv;Präteritum;Partizip II</code>. Mehrere Varianten mit <code>|</code> trennen. Eine Zeile pro Verb.</p>
+        <textarea id="listBox" spellcheck="false"></textarea>
+        <div class="row" style="justify-content:space-between; margin-top:10px;">
+          <div class="muted small">Die Liste wird lokal im Browser gespeichert (kein Server nötig).</div>
+          <div class="row">
+            <button class="btn" id="downloadList">Liste als Datei</button>
+            <input type="file" id="uploadList" accept=".txt,.csv" style="display:none;" />
+            <button class="btn" id="uploadBtn">Liste laden…</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // --- Daten ---
+    const DEFAULT_DATA_TEXT = `finden;fand;gefunden
+gehen;ging;gegangen
+kommen;kam;gekommen
+sehen;sah;gesehen
+lesen;las;gelesen
+essen;aß|ass;gegessen
+trinken;trank;getrunken
+nehmen;nahm;genommen
+schreiben;schrieb;geschrieben
+bleiben;blieb;geblieben
+schlafen;schlief;geschlafen
+sprechen;sprach;gesprochen
+laufen;lief;gelaufen
+tragen;trug;getragen
+helfen;half;geholfen
+werfen;warf;geworfen
+beginnen;begann;begonnen
+gewinnen;gewann;gewonnen
+verstehen;verstand;verstanden
+verlieren;verlor;verloren
+ziehen;zog;gezogen
+fahren;fuhr;gefahren
+reiten;ritt;geritten
+singen;sang;gesungen
+springen;sprang;gesprungen
+`;
+
+    // --- Speicher / Liste ---
+    const listBox = document.getElementById('listBox');
+    function loadListFromStorage(){
+      const t = localStorage.getItem('stammformen_liste_v1');
+      listBox.value = t && t.trim() ? t : DEFAULT_DATA_TEXT.trim();
+    }
+    function saveListToStorage(){
+      localStorage.setItem('stammformen_liste_v1', listBox.value.trim());
+    }
+
+    // Parse Textliste -> Array von {inf, praet:[...], part2:[...]}
+    function parseList(text){
+      const lines = text.split(/\r?\n/).map(l=>l.trim()).filter(Boolean);
+      const items = [];
+      for(const ln of lines){
+        const parts = ln.split(';');
+        if(parts.length < 3) continue;
+        const [inf, p, p2] = parts.map(s=>s.trim());
+        items.push({
+          inf,
+          praet: p.split('|').map(s=>s.trim()).filter(Boolean),
+          part2: p2.split('|').map(s=>s.trim()).filter(Boolean)
+        });
+      }
+      return items;
+    }
+
+    // Normalisierung: trim, lower, ß->ss, mehrfaches Leerzeichen raus
+    function norm(s, tolerant=true){
+      if(!s) return '';
+      let x = s.trim();
+      if(tolerant){
+        x = x.toLowerCase();
+        x = x.replace(/ß/g,'ss');
+        x = x.replace(/\s+/g,' ');
+      }
+      return x;
+    }
+
+    function isCorrect(user, solutions, tolerant){
+      const u = norm(user, tolerant);
+      return solutions.some(sol => norm(sol, tolerant) === u);
+    }
+
+    // --- Quiz Logik ---
+    const startBtn = document.getElementById('startBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const quizArea = document.getElementById('quizArea');
+    const summaryArea = document.getElementById('summaryArea');
+    const tolerantCb = document.getElementById('tolerant');
+    const shuffleCb  = document.getElementById('shuffle');
+
+    let deck = []; // aktuelle Auswahl
+    let idx = 0;
+    let results = []; // pro Aufgabe: {inf, praet_ok, praet_user, part2_ok, part2_user, correct}
+
+    function startQuiz(){
+      const items = parseList(listBox.value);
+      if(items.length === 0){ alert('Die Wortliste ist leer.'); return; }
+      const n = Math.max(1, parseInt(document.getElementById('count').value || '1', 10));
+      deck = [...items];
+      if(shuffleCb.checked){ deck.sort(()=>Math.random()-0.5); }
+      deck = deck.slice(0, Math.min(n, deck.length));
+      idx = 0; results = [];
+      summaryArea.style.display = 'none';
+      quizArea.style.display = 'block';
+      renderCard();
+    }
+
+    function renderCard(){
+      const item = deck[idx];
+      quizArea.innerHTML = `
+        <div class="qcard">
+          <div class="qhead">
+            <div>
+              <div class="qsub">Aufgabe ${idx+1} von ${deck.length}</div>
+              <div class="qbig">Infinitiv: <span style="color:#a5b4fc;">${item.inf}</span></div>
+            </div>
+            <div class="pill">Toleranz: ${tolerantCb.checked ? 'an' : 'aus'}</div>
+          </div>
+          <div class="qinputs">
+            <div>
+              <label>Präteritum</label>
+              <input id="inpPraet" type="text" autocomplete="off" />
+            </div>
+            <div>
+              <label>Partizip II</label>
+              <input id="inpPart" type="text" autocomplete="off" />
+            </div>
+          </div>
+          <div class="foot">
+            ${idx>0 ? '<button class="btn ghost" id="backBtn">Zurück</button>' : ''}
+            <button class="btn primary" id="checkBtn">Prüfen</button>
+            ${idx<deck.length-1 ? '' : '<button class="btn" id="finishBtn">Beenden</button>'}
+          </div>
+          <div id="feedback" style="margin-top:12px;"></div>
+        </div>
+      `;
+
+      document.getElementById('checkBtn').onclick = () => checkCurrent();
+      const backBtn = document.getElementById('backBtn');
+      if(backBtn) backBtn.onclick = () => { if(idx>0){ idx--; renderCard(); }}
+      const finishBtn = document.getElementById('finishBtn');
+      if(finishBtn) finishBtn.onclick = () => finishQuiz();
+
+      // Enter-Handling: bei Enter prüfen
+      const inpPraet = document.getElementById('inpPraet');
+      const inpPart  = document.getElementById('inpPart');
+      inpPraet.addEventListener('keydown', e=>{ if(e.key==='Enter') document.getElementById('checkBtn').click(); });
+      inpPart.addEventListener('keydown', e=>{ if(e.key==='Enter') document.getElementById('checkBtn').click(); });
+      inpPraet.focus();
+    }
+
+    function checkCurrent(){
+      const item = deck[idx];
+      const tolerant = tolerantCb.checked;
+      const uPraet = document.getElementById('inpPraet').value;
+      const uPart  = document.getElementById('inpPart').value;
+      const okPraet = isCorrect(uPraet, item.praet, tolerant);
+      const okPart  = isCorrect(uPart,  item.part2, tolerant);
+
+      // Feedback anzeigen
+      const fb = document.getElementById('feedback');
+      fb.innerHTML = `
+        <div class="resultline">
+          <div><span class="status ${okPraet?'ok':'bad'}">${okPraet?'✓ richtig':'✗ falsch'}</span> – Präteritum: <span class="muted">${escapeHtml(uPraet || '—')}</span> <span class="small">(Lösung: ${item.praet.map(escapeHtml).join(' | ')})</span></div>
+          <div style="margin-top:6px;"><span class="status ${okPart?'ok':'bad'}">${okPart?'✓ richtig':'✗ falsch'}</span> – Partizip II: <span class="muted">${escapeHtml(uPart || '—')}</span> <span class="small">(Lösung: ${item.part2.map(escapeHtml).join(' | ')})</span></div>
+        </div>
+      `;
+
+      // Ergebnis merken (überschreiben, falls schon vorhanden)
+      results[idx] = {
+        inf: item.inf,
+        praet_ok: okPraet,
+        praet_user: uPraet,
+        praet_solutions: item.praet.slice(),
+        part2_ok: okPart,
+        part2_user: uPart,
+        part2_solutions: item.part2.slice(),
+        correct: okPraet && okPart
+      };
+
+      // Weiter-Button anbieten
+      const nextBtn = document.createElement('button');
+      nextBtn.className = 'btn';
+      nextBtn.textContent = idx < deck.length-1 ? 'Weiter' : 'Zur Übersicht';
+      nextBtn.style.marginTop = '10px';
+      nextBtn.onclick = () => {
+        if(idx < deck.length-1){ idx++; renderCard(); }
+        else { finishQuiz(); }
+      };
+      fb.appendChild(nextBtn);
+    }
+
+    function finishQuiz(){
+      quizArea.style.display = 'none';
+      const total = deck.length;
+      const solved = results.filter(r=>r && r.correct).length;
+      const pct = Math.round((solved/total)*100);
+
+      // Tabelle
+      let rows = '';
+      results.forEach((r,i)=>{
+        if(!r){ return; }
+        rows += `<tr>
+          <td>${i+1}</td>
+          <td>${escapeHtml(r.inf)}</td>
+          <td class="${r.praet_ok?'ok':'bad'}">${r.praet_ok?'✓':'✗'}</td>
+          <td>${escapeHtml(r.praet_user||'—')}</td>
+          <td><span class="small">${r.praet_solutions.map(escapeHtml).join(' | ')}</span></td>
+          <td class="${r.part2_ok?'ok':'bad'}">${r.part2_ok?'✓':'✗'}</td>
+          <td>${escapeHtml(r.part2_user||'—')}</td>
+          <td><span class="small">${r.part2_solutions.map(escapeHtml).join(' | ')}</span></td>
+        </tr>`
+      });
+
+      summaryArea.innerHTML = `
+        <div class="qcard">
+          <div class="qhead">
+            <div>
+              <div class="qbig">Ergebnis: ${solved}/${total} (${pct}%)</div>
+              <div class="qsub">${new Date().toLocaleString()}</div>
+            </div>
+            <div class="row">
+              <button class="btn" id="retryBtn">Noch einmal</button>
+              <button class="btn primary" id="exportBtn">CSV exportieren</button>
+            </div>
+          </div>
+          <div style="overflow:auto; margin-top:10px;">
+            <table class="table">
+              <thead><tr>
+                <th>#</th>
+                <th>Infinitiv</th>
+                <th colspan="3">Präteritum</th>
+                <th colspan="3">Partizip II</th>
+              </tr></thead>
+              <tbody>${rows}</tbody>
+            </table>
+          </div>
+        </div>
+      `;
+      summaryArea.style.display = 'block';
+
+      document.getElementById('retryBtn').onclick = () => startQuiz();
+      document.getElementById('exportBtn').onclick = () => exportCSV();
+    }
+
+    function exportCSV(){
+      const name = document.getElementById('student').value.trim();
+      const tolerant = tolerantCb.checked ? 'an' : 'aus';
+      const header = ['Name','Zeit','Toleranz','Gesamt','Richtig','Prozent','#','Infinitiv','Prät_richtig','Prät_Eingabe','Prät_Lösungen','Part_richtig','Part_Eingabe','Part_Lösungen'];
+      const total = deck.length;
+      const solved = results.filter(r=>r && r.correct).length;
+      const pct = Math.round((solved/total)*100);
+      const rows = [];
+      results.forEach((r,i)=>{
+        rows.push([
+          name,
+          new Date().toISOString(),
+          tolerant,
+          total,
+          solved,
+          pct,
+          i+1,
+          r.inf,
+          r.praet_ok ? '1':'0',
+          r.praet_user,
+          r.praet_solutions.join(' | '),
+          r.part2_ok ? '1':'0',
+          r.part2_user,
+          r.part2_solutions.join(' | ')
+        ]);
+      });
+      const csv = [header].concat(rows).map(r=>r.map(v=>`"${String(v??'').replace(/"/g,'""')}"`).join(',')).join('\n');
+      const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+      const a = document.createElement('a');
+      const fileName = `stammformen_${(name||'ohneName').replace(/\s+/g,'_')}_${new Date().toISOString().slice(0,10)}.csv`;
+      a.href = URL.createObjectURL(blob);
+      a.download = fileName;
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    }
+
+    // Sonstiges UI
+    document.getElementById('saveList').onclick = () => { saveListToStorage(); flash('Gespeichert.'); };
+    document.getElementById('restoreList').onclick = () => { listBox.value = DEFAULT_DATA_TEXT.trim(); flash('Standardliste geladen.'); };
+    document.getElementById('downloadList').onclick = () => {
+      const blob = new Blob([listBox.value], {type:'text/plain;charset=utf-8;'});
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'stammformen_liste.txt';
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    };
+    document.getElementById('uploadBtn').onclick = () => document.getElementById('uploadList').click();
+    document.getElementById('uploadList').addEventListener('change', (e)=>{
+      const file = e.target.files?.[0];
+      if(!file) return;
+      const reader = new FileReader();
+      reader.onload = () => { listBox.value = String(reader.result||''); flash('Liste geladen.'); };
+      reader.readAsText(file);
+    });
+
+    document.getElementById('startBtn').onclick = startQuiz;
+    document.getElementById('resetBtn').onclick = () => { results=[]; quizArea.style.display='none'; summaryArea.style.display='none'; };
+
+    function flash(msg){
+      const el = document.createElement('div');
+      el.textContent = msg;
+      el.style.position='fixed'; el.style.right='16px'; el.style.bottom='16px'; el.style.padding='10px 12px';
+      el.style.borderRadius='10px'; el.style.background='#0f1838'; el.style.border='1px solid rgba(255,255,255,0.14)';
+      document.body.appendChild(el);
+      setTimeout(()=>{ el.remove(); },1200);
+    }
+
+    function escapeHtml(s){
+      return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
+
+    // Init
+    loadListFromStorage();
+  </script>
+</body>
 </html>
