@@ -1,410 +1,577 @@
-
 <!DOCTYPE html>
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Stammformen‑Trainer</title>
+  <title>Deutsch‑Toolbox – Unterrichtswebsite</title>
   <style>
-    :root { --bg:#0b1020; --card:#131a33; --muted:#94a3b8; --text:#e5e7eb; --ok:#16a34a; --bad:#dc2626; --accent:#4f46e5; }
-    html,body { height:100%; }
-    body { margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Inter,Arial,sans-serif; background:linear-gradient(180deg,#0b1020,#0b1226 40%,#0c132a); color:var(--text); }
-    .wrap { max-width:900px; margin:24px auto; padding:0 16px 48px; }
-    .title { font-size:clamp(20px,4vw,32px); font-weight:800; letter-spacing:0.2px; display:flex; gap:12px; align-items:center; }
-    .title small{ font-weight:500; color:var(--muted); }
-    .card { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:16px; padding:18px; box-shadow:0 6px 30px rgba(0,0,0,0.2); }
-    .grid { display:grid; grid-template-columns:1fr; gap:16px; }
-    @media (min-width:860px){ .grid{ grid-template-columns: 1.1fr 0.9fr; } }
-    label{ display:block; font-weight:600; margin-bottom:6px; }
-    input[type="text"], input[type="number"], textarea, select { width:100%; padding:10px 12px; border-radius:10px; border:1px solid rgba(255,255,255,0.12); background:#0e1530; color:var(--text); outline:none; }
-    textarea{ min-height:160px; font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size:14px; }
-    .row{ display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
-    .btn { display:inline-flex; align-items:center; gap:8px; padding:10px 14px; border-radius:12px; border:1px solid rgba(255,255,255,0.14); background:#0f1736; color:var(--text); cursor:pointer; font-weight:700; }
-    .btn.primary{ background:linear-gradient(180deg,#4f46e5,#4338ca); border-color:#6366f1; }
-    .btn.ghost{ background:transparent; }
-    .pill{ padding:6px 10px; border-radius:999px; background:#0e1634; border:1px solid rgba(255,255,255,0.12); font-size:12px; color:var(--muted); }
-    .muted{ color:var(--muted); }
-    .status{ font-weight:800; }
-    .ok{ color:var(--ok); }
-    .bad{ color:var(--bad); }
-    .qcard{ padding:20px; border-radius:16px; background:#0f1838; border:1px solid rgba(255,255,255,0.12); }
-    .qhead{ display:flex; justify-content:space-between; align-items:center; gap:12px; }
-    .qbig{ font-size:clamp(20px,4vw,28px); font-weight:800; }
-    .qsub{ color:var(--muted); font-weight:600; }
-    .qinputs{ display:grid; grid-template-columns:1fr; gap:12px; margin-top:14px; }
-    @media(min-width:720px){ .qinputs{ grid-template-columns:1fr 1fr; } }
-    .resultline{ padding:10px 12px; border-radius:10px; background:#0e1532; border:1px dashed rgba(255,255,255,0.12); }
-    .small{ font-size:12px; }
-    .table{ width:100%; border-collapse:collapse; font-size:14px; }
-    .table th,.table td{ border-bottom:1px solid rgba(255,255,255,0.08); padding:8px 6px; text-align:left; }
-    .foot{ margin-top:14px; display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end; }
+    :root{--bg:#0b1020;--panel:#0f1736;--card:#131a33;--muted:#9aa4bf;--text:#e6e9f0;--accent:#6d7cff;--ok:#16a34a;--bad:#dc2626;}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Ubuntu,Inter,Arial,sans-serif;background:linear-gradient(180deg,#0b1020,#0b1226 40%,#0c132a);color:var(--text)}
+    .app{display:grid;grid-template-columns:280px 1fr;min-height:100dvh}
+    .side{background:rgba(255,255,255,0.03);border-right:1px solid rgba(255,255,255,0.08);padding:18px;position:sticky;top:0;height:100dvh}
+    .brand{font-weight:900;letter-spacing:.3px;margin-bottom:14px;font-size:20px}
+    .nav{display:flex;flex-direction:column;gap:6px}
+    .nav button{width:100%;text-align:left;padding:10px 12px;border-radius:12px;border:1px solid transparent;background:transparent;color:var(--text);cursor:pointer}
+    .nav button.active{background:linear-gradient(180deg,#1a2352,#131a33);border-color:#2a3570}
+    .nav .group{margin-top:12px;color:var(--muted);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+    .main{padding:20px}
+    .tool{display:none}
+    .tool.active{display:block}
+
+    .card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:16px;box-shadow:0 8px 30px rgba(0,0,0,.2)}
+    .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .grid{display:grid;gap:12px}
+    .grid2{grid-template-columns:1fr 1fr}
+    .grid3{grid-template-columns:repeat(3,1fr)}
+    @media(min-width:980px){.grid2{display:grid}.grid3{display:grid}}
+
+    label{font-weight:700}
+    input[type="text"],input[type="number"],textarea,select{width:100%;padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:#0e1530;color:var(--text);outline:none}
+    textarea{min-height:140px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:14px}
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.14);background:#101a40;color:var(--text);cursor:pointer;font-weight:800}
+    .btn.primary{background:linear-gradient(180deg,#6d7cff,#4f59d9);border-color:#8892ff}
+    .btn.ghost{background:transparent}
+    .pill{padding:6px 10px;border-radius:999px;background:#0e1634;border:1px solid rgba(255,255,255,.12);font-size:12px;color:var(--muted)}
+    .muted{color:var(--muted)}
+    .ok{color:var(--ok)}.bad{color:var(--bad)}
+    .table{width:100%;border-collapse:collapse}
+    .table th,.table td{border-bottom:1px solid rgba(255,255,255,.08);padding:8px 6px;text-align:left;font-size:14px}
+    .qbig{font-size:clamp(20px,3.6vw,28px);font-weight:900}
+    .small{font-size:12px}
+    .spacer{height:6px}
+    .tools-header{font-weight:900;font-size:24px;margin:6px 0 14px}
+    .hint{background:#0e1634;border:1px dashed rgba(255,255,255,.12);padding:8px 10px;border-radius:10px}
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="title">🧠 Stammformen‑Trainer <small>Infinitiv → Präteritum → Partizip II</small></div>
+  <div class="app">
+    <aside class="side">
+      <div class="brand">📚 Deutsch‑Toolbox</div>
+      <div class="nav" id="nav"></div>
+      <div class="spacer"></div>
+      <div class="hint small">Daten werden lokal im Browser gespeichert. Keine Server nötig.</div>
+    </aside>
 
-    <div class="grid">
-      <!-- Left: Trainer -->
-      <div class="card" id="trainerCard">
-        <div class="row" style="justify-content:space-between; align-items:flex-end; margin-bottom:8px;">
-          <div style="flex:1; min-width:220px;">
-            <label for="student">Name (optional, für Export)</label>
-            <input id="student" type="text" placeholder="Vorname Nachname" />
-          </div>
-          <div>
-            <label for="count">Anzahl Aufgaben</label>
-            <input id="count" type="number" min="1" value="10" style="width:110px;" />
-          </div>
-        </div>
-
-        <div class="row" style="justify-content:space-between;">
-          <div class="row">
-            <label class="pill"><input id="tolerant" type="checkbox" checked style="transform:translateY(1.5px); margin-right:8px;"> Toleranz: Groß/Klein & ß/ss</label>
-            <label class="pill"><input id="shuffle" type="checkbox" checked style="transform:translateY(1.5px); margin-right:8px;"> Zufällige Reihenfolge</label>
-          </div>
-          <div class="row">
-            <button class="btn primary" id="startBtn">Start</button>
-            <button class="btn ghost" id="resetBtn">Zurücksetzen</button>
-          </div>
-        </div>
-
-        <div id="quizArea" style="margin-top:16px; display:none;"></div>
-        <div id="summaryArea" style="margin-top:16px; display:none;"></div>
-      </div>
-
-      <!-- Right: Wortliste / Verwaltung -->
-      <div class="card">
-        <div class="row" style="justify-content:space-between; align-items:center;">
-          <div style="font-weight:800;">Wortliste</div>
-          <div class="row">
-            <button class="btn" id="saveList">Liste speichern</button>
-            <button class="btn ghost" id="restoreList">Standard laden</button>
-          </div>
-        </div>
-        <p class="muted small">Format: <code>Infinitiv;Präteritum;Partizip II</code>. Mehrere Varianten mit <code>|</code> trennen. Eine Zeile pro Verb.</p>
-        <textarea id="listBox" spellcheck="false"></textarea>
-        <div class="row" style="justify-content:space-between; margin-top:10px;">
-          <div class="muted small">Die Liste wird lokal im Browser gespeichert (kein Server nötig).</div>
-          <div class="row">
-            <button class="btn" id="downloadList">Liste als Datei</button>
-            <input type="file" id="uploadList" accept=".txt,.csv" style="display:none;" />
-            <button class="btn" id="uploadBtn">Liste laden…</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
+    <main class="main">
+      <!-- ===== Tools Container ===== -->
+      <div id="tools"></div>
+    </main>
   </div>
 
+  <template id="tpl-nav">
+    <div class="group">Trainer</div>
+    <button data-tool="stammformen" class="active">🧠 Stammformen‑Trainer</button>
+
+    <div class="group">Zeit & Klasse</div>
+    <button data-tool="clock">⏰ Zeituhr</button>
+    <button data-tool="stopwatch">⏱️ Stoppuhr</button>
+    <button data-tool="countdown">⏳ Countdown‑Timer</button>
+    <button data-tool="names">🎲 Namens‑Zufall & Gruppen</button>
+
+    <div class="group">Deutsch‑Werkzeuge</div>
+    <button data-tool="cloze">🔡 Lückentext‑Generator</button>
+    <button data-tool="scrambler">🧩 Satzbau‑Mixer</button>
+    <button data-tool="textstats">📝 Text‑Analyse</button>
+    <button data-tool="dictation">🔊 Diktat‑Vorleser</button>
+  </template>
+
+  <template id="tpl-tools">
+    <!-- =============== STAMMFORMEN =============== -->
+    <section class="tool active" id="tool-stammformen">
+      <div class="tools-header">🧠 Stammformen‑Trainer</div>
+      <div class="grid grid2">
+        <div class="card">
+          <div class="row" style="justify-content:space-between;align-items:flex-end;margin-bottom:8px">
+            <div style="flex:1;min-width:220px">
+              <label for="sf-student">Name (optional, Export)</label>
+              <input id="sf-student" type="text" placeholder="Vorname Nachname">
+            </div>
+            <div>
+              <label for="sf-count">Anzahl Aufgaben</label>
+              <input id="sf-count" type="number" min="1" value="10" style="width:110px">
+            </div>
+          </div>
+          <div class="row" style="justify-content:space-between">
+            <div class="row">
+              <label class="pill"><input id="sf-tolerant" type="checkbox" checked style="transform:translateY(1.5px);margin-right:8px"> Toleranz: Groß/Klein & ß/ss</label>
+              <label class="pill"><input id="sf-shuffle" type="checkbox" checked style="transform:translateY(1.5px);margin-right:8px"> Zufällige Reihenfolge</label>
+            </div>
+            <div class="row">
+              <button class="btn primary" id="sf-start">Start</button>
+              <button class="btn ghost" id="sf-reset">Zurücksetzen</button>
+            </div>
+          </div>
+          <div id="sf-quiz" style="margin-top:16px;display:none"></div>
+          <div id="sf-summary" style="margin-top:16px;display:none"></div>
+        </div>
+        <div class="card">
+          <div class="row" style="justify-content:space-between;align-items:center">
+            <div style="font-weight:800">Wortliste</div>
+            <div class="row">
+              <button class="btn" id="sf-saveList">Liste speichern</button>
+              <button class="btn ghost" id="sf-restoreList">Standard laden</button>
+            </div>
+          </div>
+          <p class="muted small">Format: <code>Infinitiv;Präteritum;Partizip II</code>. Varianten mit <code>|</code> trennen. Eine Zeile pro Verb.</p>
+          <textarea id="sf-list" spellcheck="false"></textarea>
+          <div class="row" style="justify-content:space-between;margin-top:10px">
+            <div class="muted small">Lokal im Browser gespeichert.</div>
+            <div class="row">
+              <button class="btn" id="sf-downloadList">Liste als Datei</button>
+              <input type="file" id="sf-uploadList" accept=".txt,.csv" style="display:none">
+              <button class="btn" id="sf-uploadBtn">Liste laden…</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =============== CLOCK =============== -->
+    <section class="tool" id="tool-clock">
+      <div class="tools-header">⏰ Zeituhr</div>
+      <div class="card" style="text-align:center">
+        <div id="clock-time" class="qbig" style="font-size:min(12vw,84px)">--:--:--</div>
+        <div class="muted" id="clock-date"></div>
+      </div>
+    </section>
+
+    <!-- =============== STOPWATCH =============== -->
+    <section class="tool" id="tool-stopwatch">
+      <div class="tools-header">⏱️ Stoppuhr</div>
+      <div class="card" style="text-align:center">
+        <div id="sw-display" class="qbig" style="font-size:min(12vw,72px)">00:00.000</div>
+        <div class="row" style="justify-content:center;margin-top:10px">
+          <button class="btn primary" id="sw-start">Start</button>
+          <button class="btn" id="sw-lap">Runde</button>
+          <button class="btn ghost" id="sw-reset">Reset</button>
+        </div>
+        <div style="margin-top:12px;max-height:220px;overflow:auto">
+          <table class="table" id="sw-laps"><thead><tr><th>#</th><th>Zeit</th></tr></thead><tbody></tbody></table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== COUNTDOWN ============== -->
+    <section class="tool" id="tool-countdown">
+      <div class="tools-header">⏳ Countdown‑Timer</div>
+      <div class="card">
+        <div class="grid grid3">
+          <div>
+            <label>Minuten</label>
+            <input id="cd-min" type="number" min="0" value="5">
+          </div>
+          <div>
+            <label>Sekunden</label>
+            <input id="cd-sec" type="number" min="0" max="59" value="0">
+          </div>
+          <div>
+            <label>&nbsp;</label>
+            <div class="row">
+              <button class="btn primary" id="cd-start">Start</button>
+              <button class="btn ghost" id="cd-reset">Reset</button>
+            </div>
+          </div>
+        </div>
+        <div style="text-align:center;margin-top:12px">
+          <div id="cd-display" class="qbig" style="font-size:min(12vw,72px)">05:00</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =============== NAMES =============== -->
+    <section class="tool" id="tool-names">
+      <div class="tools-header">🎲 Namens‑Zufall & Gruppen</div>
+      <div class="grid grid2">
+        <div class="card">
+          <label>Namensliste (eine Zeile pro Name)</label>
+          <textarea id="ng-list" placeholder="Anna\nBen\nElif\n..." spellcheck="false"></textarea>
+          <div class="row" style="justify-content:space-between;margin-top:8px">
+            <div class="row">
+              <label class="pill"><input id="ng-noRepeat" type="checkbox" checked style="transform:translateY(1.5px);margin-right:8px"> Nicht wiederholen</label>
+            </div>
+            <div class="row">
+              <button class="btn" id="ng-save">Speichern</button>
+              <button class="btn ghost" id="ng-clear">Leeren</button>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="row" style="justify-content:space-between">
+            <div class="qbig" id="ng-picked">—</div>
+            <div class="row">
+              <button class="btn primary" id="ng-pick">Ziehen</button>
+              <button class="btn" id="ng-reset">Reset</button>
+            </div>
+          </div>
+          <div class="muted small" id="ng-remaining"></div>
+          <div class="spacer"></div>
+          <div class="grid grid3">
+            <div>
+              <label>Gruppengröße</label>
+              <input id="ng-gsize" type="number" min="2" value="3">
+            </div>
+            <div>
+              <label>&nbsp;</label>
+              <button class="btn" id="ng-groups">Gruppen bilden</button>
+            </div>
+          </div>
+          <div id="ng-groupsOut" style="margin-top:10px"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== CLOZE ============== -->
+    <section class="tool" id="tool-cloze">
+      <div class="tools-header">🔡 Lückentext‑Generator</div>
+      <div class="grid grid2">
+        <div class="card">
+          <label>Ausgangstext</label>
+          <textarea id="cz-input" placeholder="Füge hier den Text ein…"></textarea>
+          <div class="grid grid3" style="margin-top:10px">
+            <div>
+              <label>Lückenanteil (%)</label>
+              <input id="cz-pct" type="number" min="0" max="90" value="20">
+            </div>
+            <div>
+              <label>Min. Wortlänge</label>
+              <input id="cz-minlen" type="number" min="2" value="4">
+            </div>
+            <div>
+              <label>&nbsp;</label>
+              <div class="row">
+                <button class="btn primary" id="cz-make">Erstellen</button>
+                <button class="btn" id="cz-print">Drucken</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="row" style="justify-content:space-between">
+            <div style="font-weight:800">Arbeitsblatt</div>
+            <div class="row">
+              <button class="btn" id="cz-copy">In Zwischenablage</button>
+              <button class="btn ghost" id="cz-showKey">Lösung ein/aus</button>
+            </div>
+          </div>
+          <div id="cz-output" style="white-space:pre-wrap;margin-top:8px"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== SCRAMBLER ============== -->
+    <section class="tool" id="tool-scrambler">
+      <div class="tools-header">🧩 Satzbau‑Mixer</div>
+      <div class="grid grid2">
+        <div class="card">
+          <label>Sätze (eine Zeile pro Satz)</label>
+          <textarea id="sb-input" placeholder="Weil es regnet, bleiben wir zu Hause.\nWenn die Glocke läutet, räumen alle auf."></textarea>
+          <div class="row" style="justify-content:space-between;margin-top:8px">
+            <label class="pill"><input id="sb-keepPunct" type="checkbox" checked style="transform:translateY(1.5px);margin-right:8px"> Satzzeichen behalten</label>
+            <div class="row">
+              <button class="btn primary" id="sb-make">Erstellen</button>
+              <button class="btn" id="sb-print">Drucken</button>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div style="font-weight:800">Arbeitsblatt</div>
+          <div id="sb-output" style="margin-top:8px"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== TEXTSTATS ============== -->
+    <section class="tool" id="tool-textstats">
+      <div class="tools-header">📝 Text‑Analyse</div>
+      <div class="grid grid2">
+        <div class="card">
+          <label>Text</label>
+          <textarea id="ts-input" placeholder="Füge hier einen Text ein…"></textarea>
+          <div class="row" style="justify-content:flex-end;margin-top:8px">
+            <button class="btn primary" id="ts-analyze">Analysieren</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="grid grid2">
+            <div>
+              <div class="muted small">Wörter</div>
+              <div class="qbig" id="ts-words">0</div>
+            </div>
+            <div>
+              <div class="muted small">Sätze</div>
+              <div class="qbig" id="ts-sent">0</div>
+            </div>
+          </div>
+          <div class="grid grid2" style="margin-top:10px">
+            <div>
+              <div class="muted small">Zeichen (ohne Leerz.)</div>
+              <div class="qbig" id="ts-chars">0</div>
+            </div>
+            <div>
+              <div class="muted small">Ø Silben/Wort (≈)</div>
+              <div class="qbig" id="ts-syll">0</div>
+            </div>
+          </div>
+          <div style="margin-top:12px">
+            <div style="font-weight:800">Häufigste Wörter</div>
+            <div id="ts-top" class="small muted"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== DICTATION ============== -->
+    <section class="tool" id="tool-dictation">
+      <div class="tools-header">🔊 Diktat‑Vorleser</div>
+      <div class="grid grid2">
+        <div class="card">
+          <label>Text (Satz pro Zeile empfohlen)</label>
+          <textarea id="dk-input" placeholder="Heute schreibe ich ein Diktat.\nIch höre genau zu.\n…"></textarea>
+          <div class="grid grid3" style="margin-top:10px">
+            <div>
+              <label>Tempo (0.5–1.5)</label>
+              <input id="dk-rate" type="number" min="0.5" max="1.5" step="0.1" value="0.9">
+            </div>
+            <div>
+              <label>Pause zwischen Zeilen (s)</label>
+              <input id="dk-pause" type="number" min="0" step="0.5" value="2">
+            </div>
+            <div>
+              <label>&nbsp;</label>
+              <div class="row">
+                <button class="btn primary" id="dk-start">Start</button>
+                <button class="btn ghost" id="dk-stop">Stopp</button>
+              </div>
+            </div>
+          </div>
+          <div class="muted small">Nutzt die integrierte Sprachausgabe des Browsers (deutsche Stimme wählen, falls verfügbar).</div>
+        </div>
+        <div class="card">
+          <div style="font-weight:800">Status</div>
+          <div id="dk-status" class="small muted">Bereit</div>
+        </div>
+      </div>
+    </section>
+  </template>
+
   <script>
-    // --- Daten ---
-    const DEFAULT_DATA_TEXT = `finden;fand;gefunden
-gehen;ging;gegangen
-kommen;kam;gekommen
-sehen;sah;gesehen
-lesen;las;gelesen
-essen;aß|ass;gegessen
-trinken;trank;getrunken
-nehmen;nahm;genommen
-schreiben;schrieb;geschrieben
-bleiben;blieb;geblieben
-schlafen;schlief;geschlafen
-sprechen;sprach;gesprochen
-laufen;lief;gelaufen
-tragen;trug;getragen
-helfen;half;geholfen
-werfen;warf;geworfen
-beginnen;begann;begonnen
-gewinnen;gewann;gewonnen
-verstehen;verstand;verstanden
-verlieren;verlor;verloren
-ziehen;zog;gezogen
-fahren;fuhr;gefahren
-reiten;ritt;geritten
-singen;sang;gesungen
-springen;sprang;gesprungen
-`;
+    // ---------- Navigation & Mount ----------
+    const navHost = document.getElementById('nav');
+    const toolsHost = document.getElementById('tools');
+    navHost.appendChild(document.getElementById('tpl-nav').content.cloneNode(true));
+    toolsHost.appendChild(document.getElementById('tpl-tools').content.cloneNode(true));
 
-    // --- Speicher / Liste ---
-    const listBox = document.getElementById('listBox');
-    function loadListFromStorage(){
-      const t = localStorage.getItem('stammformen_liste_v1');
-      listBox.value = t && t.trim() ? t : DEFAULT_DATA_TEXT.trim();
-    }
-    function saveListToStorage(){
-      localStorage.setItem('stammformen_liste_v1', listBox.value.trim());
-    }
+    navHost.addEventListener('click', (e)=>{
+      const btn = e.target.closest('button[data-tool]');
+      if(!btn) return;
+      navHost.querySelectorAll('button[data-tool]').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      const id = 'tool-'+btn.dataset.tool;
+      document.querySelectorAll('.tool').forEach(t=>t.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    });
 
-    // Parse Textliste -> Array von {inf, praet:[...], part2:[...]}
-    function parseList(text){
-      const lines = text.split(/\r?\n/).map(l=>l.trim()).filter(Boolean);
-      const items = [];
-      for(const ln of lines){
-        const parts = ln.split(';');
-        if(parts.length < 3) continue;
-        const [inf, p, p2] = parts.map(s=>s.trim());
-        items.push({
-          inf,
-          praet: p.split('|').map(s=>s.trim()).filter(Boolean),
-          part2: p2.split('|').map(s=>s.trim()).filter(Boolean)
-        });
-      }
-      return items;
-    }
+    // ---------- Helper ----------
+    const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    const ls = (k,v) => v===undefined ? localStorage.getItem(k) : localStorage.setItem(k,v);
+    const shuffle = a => a.sort(()=>Math.random()-0.5);
 
-    // Normalisierung: trim, lower, ß->ss, mehrfaches Leerzeichen raus
-    function norm(s, tolerant=true){
-      if(!s) return '';
-      let x = s.trim();
-      if(tolerant){
-        x = x.toLowerCase();
-        x = x.replace(/ß/g,'ss');
-        x = x.replace(/\s+/g,' ');
-      }
+    function norm(str,tolerant=true){
+      if(!str) return '';
+      let x = String(str).trim();
+      if(tolerant){ x=x.toLowerCase().replace(/ß/g,'ss').replace(/\s+/g,' '); }
       return x;
     }
 
-    function isCorrect(user, solutions, tolerant){
-      const u = norm(user, tolerant);
-      return solutions.some(sol => norm(sol, tolerant) === u);
-    }
-
-    // --- Quiz Logik ---
-    const startBtn = document.getElementById('startBtn');
-    const resetBtn = document.getElementById('resetBtn');
-    const quizArea = document.getElementById('quizArea');
-    const summaryArea = document.getElementById('summaryArea');
-    const tolerantCb = document.getElementById('tolerant');
-    const shuffleCb  = document.getElementById('shuffle');
-
-    let deck = []; // aktuelle Auswahl
-    let idx = 0;
-    let results = []; // pro Aufgabe: {inf, praet_ok, praet_user, part2_ok, part2_user, correct}
-
-    function startQuiz(){
-      const items = parseList(listBox.value);
-      if(items.length === 0){ alert('Die Wortliste ist leer.'); return; }
-      const n = Math.max(1, parseInt(document.getElementById('count').value || '1', 10));
-      deck = [...items];
-      if(shuffleCb.checked){ deck.sort(()=>Math.random()-0.5); }
-      deck = deck.slice(0, Math.min(n, deck.length));
-      idx = 0; results = [];
-      summaryArea.style.display = 'none';
-      quizArea.style.display = 'block';
-      renderCard();
-    }
-
-    function renderCard(){
-      const item = deck[idx];
-      quizArea.innerHTML = `
-        <div class="qcard">
-          <div class="qhead">
-            <div>
-              <div class="qsub">Aufgabe ${idx+1} von ${deck.length}</div>
-              <div class="qbig">Infinitiv: <span style="color:#a5b4fc;">${item.inf}</span></div>
-            </div>
-            <div class="pill">Toleranz: ${tolerantCb.checked ? 'an' : 'aus'}</div>
-          </div>
-          <div class="qinputs">
-            <div>
-              <label>Präteritum</label>
-              <input id="inpPraet" type="text" autocomplete="off" />
-            </div>
-            <div>
-              <label>Partizip II</label>
-              <input id="inpPart" type="text" autocomplete="off" />
-            </div>
-          </div>
-          <div class="foot">
-            ${idx>0 ? '<button class="btn ghost" id="backBtn">Zurück</button>' : ''}
-            <button class="btn primary" id="checkBtn">Prüfen</button>
-            ${idx<deck.length-1 ? '' : '<button class="btn" id="finishBtn">Beenden</button>'}
-          </div>
-          <div id="feedback" style="margin-top:12px;"></div>
-        </div>
-      `;
-
-      document.getElementById('checkBtn').onclick = () => checkCurrent();
-      const backBtn = document.getElementById('backBtn');
-      if(backBtn) backBtn.onclick = () => { if(idx>0){ idx--; renderCard(); }}
-      const finishBtn = document.getElementById('finishBtn');
-      if(finishBtn) finishBtn.onclick = () => finishQuiz();
-
-      // Enter-Handling: bei Enter prüfen
-      const inpPraet = document.getElementById('inpPraet');
-      const inpPart  = document.getElementById('inpPart');
-      inpPraet.addEventListener('keydown', e=>{ if(e.key==='Enter') document.getElementById('checkBtn').click(); });
-      inpPart.addEventListener('keydown', e=>{ if(e.key==='Enter') document.getElementById('checkBtn').click(); });
-      inpPraet.focus();
-    }
-
-    function checkCurrent(){
-      const item = deck[idx];
-      const tolerant = tolerantCb.checked;
-      const uPraet = document.getElementById('inpPraet').value;
-      const uPart  = document.getElementById('inpPart').value;
-      const okPraet = isCorrect(uPraet, item.praet, tolerant);
-      const okPart  = isCorrect(uPart,  item.part2, tolerant);
-
-      // Feedback anzeigen
-      const fb = document.getElementById('feedback');
-      fb.innerHTML = `
-        <div class="resultline">
-          <div><span class="status ${okPraet?'ok':'bad'}">${okPraet?'✓ richtig':'✗ falsch'}</span> – Präteritum: <span class="muted">${escapeHtml(uPraet || '—')}</span> <span class="small">(Lösung: ${item.praet.map(escapeHtml).join(' | ')})</span></div>
-          <div style="margin-top:6px;"><span class="status ${okPart?'ok':'bad'}">${okPart?'✓ richtig':'✗ falsch'}</span> – Partizip II: <span class="muted">${escapeHtml(uPart || '—')}</span> <span class="small">(Lösung: ${item.part2.map(escapeHtml).join(' | ')})</span></div>
-        </div>
-      `;
-
-      // Ergebnis merken (überschreiben, falls schon vorhanden)
-      results[idx] = {
-        inf: item.inf,
-        praet_ok: okPraet,
-        praet_user: uPraet,
-        praet_solutions: item.praet.slice(),
-        part2_ok: okPart,
-        part2_user: uPart,
-        part2_solutions: item.part2.slice(),
-        correct: okPraet && okPart
-      };
-
-      // Weiter-Button anbieten
-      const nextBtn = document.createElement('button');
-      nextBtn.className = 'btn';
-      nextBtn.textContent = idx < deck.length-1 ? 'Weiter' : 'Zur Übersicht';
-      nextBtn.style.marginTop = '10px';
-      nextBtn.onclick = () => {
-        if(idx < deck.length-1){ idx++; renderCard(); }
-        else { finishQuiz(); }
-      };
-      fb.appendChild(nextBtn);
-    }
-
-    function finishQuiz(){
-      quizArea.style.display = 'none';
-      const total = deck.length;
-      const solved = results.filter(r=>r && r.correct).length;
-      const pct = Math.round((solved/total)*100);
-
-      // Tabelle
-      let rows = '';
-      results.forEach((r,i)=>{
-        if(!r){ return; }
-        rows += `<tr>
-          <td>${i+1}</td>
-          <td>${escapeHtml(r.inf)}</td>
-          <td class="${r.praet_ok?'ok':'bad'}">${r.praet_ok?'✓':'✗'}</td>
-          <td>${escapeHtml(r.praet_user||'—')}</td>
-          <td><span class="small">${r.praet_solutions.map(escapeHtml).join(' | ')}</span></td>
-          <td class="${r.part2_ok?'ok':'bad'}">${r.part2_ok?'✓':'✗'}</td>
-          <td>${escapeHtml(r.part2_user||'—')}</td>
-          <td><span class="small">${r.part2_solutions.map(escapeHtml).join(' | ')}</span></td>
-        </tr>`
-      });
-
-      summaryArea.innerHTML = `
-        <div class="qcard">
-          <div class="qhead">
-            <div>
-              <div class="qbig">Ergebnis: ${solved}/${total} (${pct}%)</div>
-              <div class="qsub">${new Date().toLocaleString()}</div>
-            </div>
-            <div class="row">
-              <button class="btn" id="retryBtn">Noch einmal</button>
-              <button class="btn primary" id="exportBtn">CSV exportieren</button>
-            </div>
-          </div>
-          <div style="overflow:auto; margin-top:10px;">
-            <table class="table">
-              <thead><tr>
-                <th>#</th>
-                <th>Infinitiv</th>
-                <th colspan="3">Präteritum</th>
-                <th colspan="3">Partizip II</th>
-              </tr></thead>
-              <tbody>${rows}</tbody>
-            </table>
-          </div>
-        </div>
-      `;
-      summaryArea.style.display = 'block';
-
-      document.getElementById('retryBtn').onclick = () => startQuiz();
-      document.getElementById('exportBtn').onclick = () => exportCSV();
-    }
-
-    function exportCSV(){
-      const name = document.getElementById('student').value.trim();
-      const tolerant = tolerantCb.checked ? 'an' : 'aus';
-      const header = ['Name','Zeit','Toleranz','Gesamt','Richtig','Prozent','#','Infinitiv','Prät_richtig','Prät_Eingabe','Prät_Lösungen','Part_richtig','Part_Eingabe','Part_Lösungen'];
-      const total = deck.length;
-      const solved = results.filter(r=>r && r.correct).length;
-      const pct = Math.round((solved/total)*100);
-      const rows = [];
-      results.forEach((r,i)=>{
-        rows.push([
-          name,
-          new Date().toISOString(),
-          tolerant,
-          total,
-          solved,
-          pct,
-          i+1,
-          r.inf,
-          r.praet_ok ? '1':'0',
-          r.praet_user,
-          r.praet_solutions.join(' | '),
-          r.part2_ok ? '1':'0',
-          r.part2_user,
-          r.part2_solutions.join(' | ')
-        ]);
-      });
-      const csv = [header].concat(rows).map(r=>r.map(v=>`"${String(v??'').replace(/"/g,'""')}"`).join(',')).join('\n');
-      const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
-      const a = document.createElement('a');
-      const fileName = `stammformen_${(name||'ohneName').replace(/\s+/g,'_')}_${new Date().toISOString().slice(0,10)}.csv`;
-      a.href = URL.createObjectURL(blob);
-      a.download = fileName;
-      document.body.appendChild(a); a.click(); document.body.removeChild(a);
-    }
-
-    // Sonstiges UI
-    document.getElementById('saveList').onclick = () => { saveListToStorage(); flash('Gespeichert.'); };
-    document.getElementById('restoreList').onclick = () => { listBox.value = DEFAULT_DATA_TEXT.trim(); flash('Standardliste geladen.'); };
-    document.getElementById('downloadList').onclick = () => {
-      const blob = new Blob([listBox.value], {type:'text/plain;charset=utf-8;'});
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = 'stammformen_liste.txt';
-      document.body.appendChild(a); a.click(); document.body.removeChild(a);
-    };
-    document.getElementById('uploadBtn').onclick = () => document.getElementById('uploadList').click();
-    document.getElementById('uploadList').addEventListener('change', (e)=>{
-      const file = e.target.files?.[0];
-      if(!file) return;
-      const reader = new FileReader();
-      reader.onload = () => { listBox.value = String(reader.result||''); flash('Liste geladen.'); };
-      reader.readAsText(file);
-    });
-
-    document.getElementById('startBtn').onclick = startQuiz;
-    document.getElementById('resetBtn').onclick = () => { results=[]; quizArea.style.display='none'; summaryArea.style.display='none'; };
-
     function flash(msg){
-      const el = document.createElement('div');
-      el.textContent = msg;
-      el.style.position='fixed'; el.style.right='16px'; el.style.bottom='16px'; el.style.padding='10px 12px';
-      el.style.borderRadius='10px'; el.style.background='#0f1838'; el.style.border='1px solid rgba(255,255,255,0.14)';
-      document.body.appendChild(el);
-      setTimeout(()=>{ el.remove(); },1200);
+      const el=document.createElement('div'); el.textContent=msg; el.style.position='fixed';el.style.right='16px';el.style.bottom='16px';el.style.padding='10px 12px';el.style.borderRadius='10px';el.style.background='#0f1838';el.style.border='1px solid rgba(255,255,255,.14)'; el.style.zIndex=9999;
+      document.body.appendChild(el); setTimeout(()=>el.remove(),1200);
     }
 
-    function escapeHtml(s){
-      return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-    }
+    // ==================================================
+    // 1) STAMMFORMEN
+    // ==================================================
+    const SF_DEFAULT = `finden;fand;gefunden\ngehen;ging;gegangen\nkommen;kam;gekommen\nsehen;sah;gesehen\nlesen;las;gelesen\nessen;aß|ass;gegessen\ntrinken;trank;getrunken\nnehmen;nahm;genommen\nschreiben;schrieb;geschrieben\nbleiben;blieb;geblieben\nschlafen;schlief;geschlafen\nsprechen;sprach;gesprochen\nlaufen;lief;gelaufen\ntragen;trug;getragen\nhelfen;half;geholfen\nwerfen;warf;geworfen\nbeginnen;begann;begonnen\ngewinnen;gewann;gewonnen\nverstehen;verstand;verstanden\nverlieren;verlor;verloren\nziehen;zog;gezogen\nfahren;fuhr;gefahren\nreiten;ritt;geritten\nsingen;sang;gesungen\nspringen;sprang;gesprungen\n`;
 
-    // Init
-    loadListFromStorage();
+    const sf = {
+      listEl: document.getElementById('sf-list'),
+      quizEl: document.getElementById('sf-quiz'),
+      sumEl: document.getElementById('sf-summary'),
+      startBtn: document.getElementById('sf-start'),
+      resetBtn: document.getElementById('sf-reset'),
+      results: [], deck: [], idx:0,
+      parse(){
+        const lines = this.listEl.value.split(/\r?\n/).map(l=>l.trim()).filter(Boolean);
+        const items=[]; for(const ln of lines){ const p=ln.split(';'); if(p.length<3) continue; items.push({inf:p[0].trim(), praet:p[1].split('|').map(s=>s.trim()), part2:p[2].split('|').map(s=>s.trim())}); }
+        return items;
+      },
+      isOk(u, sols){ const tol=document.getElementById('sf-tolerant').checked; const U=norm(u,tol); return sols.some(s=>norm(s,tol)===U); },
+      renderCard(){ const item=this.deck[this.idx]; const tol=document.getElementById('sf-tolerant').checked;
+        this.quizEl.innerHTML=`<div class="card"><div class="row" style="justify-content:space-between;align-items:center"><div><div class="small muted">Aufgabe ${this.idx+1} von ${this.deck.length}</div><div class="qbig">Infinitiv: <span style="color:#a5b4fc">${esc(item.inf)}</span></div></div><div class="pill">Toleranz: ${tol?'an':'aus'}</div></div><div class="grid grid2" style="margin-top:10px"><div><label>Präteritum</label><input id="sf-p" type="text" autocomplete="off"></div><div><label>Partizip II</label><input id="sf-pa" type="text" autocomplete="off"></div></div><div class="row" style="justify-content:flex-end;margin-top:10px">${this.idx>0?'<button class="btn" id="sf-back">Zurück</button>':''}<button class="btn primary" id="sf-check">Prüfen</button>${this.idx<this.deck.length-1?'':'<button class="btn" id="sf-finish">Beenden</button>'}</div><div id="sf-fb" style="margin-top:10px"></div></div>`;
+        document.getElementById('sf-check').onclick=()=>this.check();
+        const b=document.getElementById('sf-back'); if(b) b.onclick=()=>{ if(this.idx>0){ this.idx--; this.renderCard(); } };
+        const f=document.getElementById('sf-finish'); if(f) f.onclick=()=>this.finish();
+        document.getElementById('sf-p').addEventListener('keydown',e=>{if(e.key==='Enter') document.getElementById('sf-check').click();});
+        document.getElementById('sf-pa').addEventListener('keydown',e=>{if(e.key==='Enter') document.getElementById('sf-check').click();});
+        document.getElementById('sf-p').focus();
+      },
+      start(){ const items=this.parse(); if(!items.length){ alert('Wortliste ist leer.'); return; }
+        const n=Math.max(1, parseInt(document.getElementById('sf-count').value||'1',10));
+        this.deck=[...items]; if(document.getElementById('sf-shuffle').checked) shuffle(this.deck);
+        this.deck=this.deck.slice(0,Math.min(n,this.deck.length)); this.idx=0; this.results=[];
+        this.sumEl.style.display='none'; this.quizEl.style.display='block'; this.renderCard();
+      },
+      check(){ const it=this.deck[this.idx]; const p=document.getElementById('sf-p').value; const pa=document.getElementById('sf-pa').value; const okP=this.isOk(p,it.praet); const okPa=this.isOk(pa,it.part2);
+        this.results[this.idx]={ inf:it.inf, praet_ok:okP, praet_user:p, praet_solutions:[...it.praet], part2_ok:okPa, part2_user:pa, part2_solutions:[...it.part2], correct: okP && okPa };
+        const fb=document.getElementById('sf-fb'); fb.innerHTML=`<div class="hint"><div><span class="${okP?'ok':'bad'}">${okP?'✓ richtig':'✗ falsch'}</span> – Präteritum: <span class="muted">${esc(p||'—')}</span> <span class="small">(Lösung: ${it.praet.map(esc).join(' | ')})</span></div><div style="margin-top:6px"><span class="${okPa?'ok':'bad'}">${okPa?'✓ richtig':'✗ falsch'}</span> – Partizip II: <span class="muted">${esc(pa||'—')}</span> <span class="small">(Lösung: ${it.part2.map(esc).join(' | ')})</span></div></div>`;
+        const next=document.createElement('button'); next.className='btn'; next.textContent=this.idx<this.deck.length-1?'Weiter':'Zur Übersicht'; next.style.marginTop='8px'; next.onclick=()=>{ if(this.idx<this.deck.length-1){ this.idx++; this.renderCard(); } else { this.finish(); } };
+        fb.appendChild(next);
+      },
+      finish(){ this.quizEl.style.display='none'; const total=this.deck.length; const solved=this.results.filter(r=>r&&r.correct).length; const pct=Math.round(solved/total*100);
+        const rows=this.results.map((r,i)=>`<tr><td>${i+1}</td><td>${esc(r.inf)}</td><td class="${r.praet_ok?'ok':'bad'}">${r.praet_ok?'✓':'✗'}</td><td>${esc(r.praet_user||'—')}</td><td class="small">${r.praet_solutions.map(esc).join(' | ')}</td><td class="${r.part2_ok?'ok':'bad'}">${r.part2_ok?'✓':'✗'}</td><td>${esc(r.part2_user||'—')}</td><td class="small">${r.part2_solutions.map(esc).join(' | ')}</td></tr>`).join('');
+        this.sumEl.innerHTML=`<div class="card"><div class="row" style="justify-content:space-between;align-items:center"><div><div class="qbig">Ergebnis: ${solved}/${total} (${pct}%)</div><div class="muted small">${new Date().toLocaleString()}</div></div><div class="row"><button class="btn" id="sf-retry">Noch einmal</button><button class="btn primary" id="sf-export">CSV exportieren</button></div></div><div style="overflow:auto;margin-top:10px"><table class="table"><thead><tr><th>#</th><th>Infinitiv</th><th colspan="3">Präteritum</th><th colspan="3">Partizip II</th></tr></thead><tbody>${rows}</tbody></table></div></div>`;
+        this.sumEl.style.display='block';
+        document.getElementById('sf-retry').onclick=()=>this.start();
+        document.getElementById('sf-export').onclick=()=>this.exportCSV();
+      },
+      exportCSV(){ const name=(document.getElementById('sf-student').value||'ohneName').trim(); const tol=document.getElementById('sf-tolerant').checked?'an':'aus'; const total=this.deck.length; const solved=this.results.filter(r=>r&&r.correct).length; const pct=Math.round(solved/total*100);
+        const header=['Name','Zeit','Toleranz','Gesamt','Richtig','Prozent','#','Infinitiv','Prät_richtig','Prät_Eingabe','Prät_Lösungen','Part_richtig','Part_Eingabe','Part_Lösungen'];
+        const rows=this.results.map((r,i)=>[name,new Date().toISOString(),tol,total,solved,pct,i+1,r.inf,r.praet_ok?'1':'0',r.praet_user,r.praet_solutions.join(' | '),r.part2_ok?'1':'0',r.part2_user,r.part2_solutions.join(' | ')]);
+        const csv=[header,...rows].map(r=>r.map(v=>`"${String(v??'').replace(/"/g,'""')}"`).join(',')).join('\n');
+        const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8;'})); a.download=`stammformen_${name.replace(/\s+/g,'_')}_${new Date().toISOString().slice(0,10)}.csv`; document.body.appendChild(a); a.click(); a.remove();
+      }
+    };
+
+    // Bind list storage
+    const lsKey='dtb_stammformen_v1';
+    const listEl=sf.listEl; listEl.value = (ls(lsKey) && ls(lsKey).trim()) ? ls(lsKey) : SF_DEFAULT.trim();
+    document.getElementById('sf-saveList').onclick=()=>{ ls(lsKey, listEl.value.trim()); flash('Gespeichert.'); };
+    document.getElementById('sf-restoreList').onclick=()=>{ listEl.value=SF_DEFAULT.trim(); flash('Standardliste geladen.'); };
+    document.getElementById('sf-downloadList').onclick=()=>{ const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([listEl.value],{type:'text/plain;charset=utf-8;'})); a.download='stammformen_liste.txt'; document.body.appendChild(a); a.click(); a.remove(); };
+    document.getElementById('sf-uploadBtn').onclick=()=>document.getElementById('sf-uploadList').click();
+    document.getElementById('sf-uploadList').addEventListener('change',e=>{ const f=e.target.files?.[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ listEl.value=String(r.result||''); flash('Liste geladen.'); }; r.readAsText(f); });
+    document.getElementById('sf-start').onclick=()=>sf.start();
+    document.getElementById('sf-reset').onclick=()=>{ sf.results=[]; sf.quizEl.style.display='none'; sf.sumEl.style.display='none'; };
+
+    // ==================================================
+    // 2) CLOCK
+    // ==================================================
+    function pad(n){return String(n).padStart(2,'0');}
+    function tickClock(){ const d=new Date(); const t=`${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`; document.getElementById('clock-time').textContent=t; document.getElementById('clock-date').textContent=d.toLocaleDateString(undefined,{weekday:'long',year:'numeric',month:'long',day:'numeric'}); }
+    setInterval(tickClock,250); tickClock();
+
+    // ==================================================
+    // 3) STOPWATCH
+    // ==================================================
+    const swDisp=document.getElementById('sw-display'); const swTable=document.querySelector('#sw-laps tbody');
+    let swStart=0, swRunning=false, swElapsed=0, swTimer=null, swLap=0;
+    function fmtMs(ms){ const m=Math.floor(ms/60000); const s=Math.floor((ms%60000)/1000); const t=ms%1000; return `${pad(m)}:${pad(s)}.${String(t).padStart(3,'0')}`; }
+    function swRender(){ const now=swRunning?Date.now():swStart; const ms=swRunning?(swElapsed + (Date.now()-swStart)):swElapsed; swDisp.textContent=fmtMs(ms); }
+    function swTick(){ if(!swRunning) return; const ms=swElapsed + (Date.now()-swStart); swDisp.textContent=fmtMs(ms); }
+    document.getElementById('sw-start').onclick=()=>{ if(!swRunning){ swRunning=true; swStart=Date.now(); swTimer=setInterval(swTick,31); document.getElementById('sw-start').textContent='Stopp'; } else { swElapsed += Date.now()-swStart; swRunning=false; clearInterval(swTimer); document.getElementById('sw-start').textContent='Start'; } };
+    document.getElementById('sw-reset').onclick=()=>{ swRunning=false; clearInterval(swTimer); swElapsed=0; swLap=0; swTable.innerHTML=''; swRender(); document.getElementById('sw-start').textContent='Start'; };
+    document.getElementById('sw-lap').onclick=()=>{ const ms=swRunning?(swElapsed + (Date.now()-swStart)):swElapsed; const tr=document.createElement('tr'); tr.innerHTML=`<td>${++swLap}</td><td>${fmtMs(ms)}</td>`; swTable.appendChild(tr); };
+    swRender();
+
+    // ==================================================
+    // 4) COUNTDOWN
+    // ==================================================
+    let cdTimer=null, cdRemain=0; const cdDisp=document.getElementById('cd-display');
+    function cdUpdate(){ const m=Math.floor(cdRemain/60), s=cdRemain%60; cdDisp.textContent=`${pad(m)}:${pad(s)}`; if(cdRemain<=0){ clearInterval(cdTimer); cdTimer=null; flash('Zeit abgelaufen!'); new AudioContext().resume?.(); try{ const ctx=new(window.AudioContext||window.webkitAudioContext)(); const o=ctx.createOscillator(); const g=ctx.createGain(); o.type='sine'; o.frequency.value=880; o.connect(g); g.connect(ctx.destination); o.start(); setTimeout(()=>{o.stop(); ctx.close();},500);}catch(e){} }
+    }
+    document.getElementById('cd-start').onclick=()=>{ const m=Math.max(0,parseInt(document.getElementById('cd-min').value||'0',10)); const s=Math.max(0,parseInt(document.getElementById('cd-sec').value||'0',10)); cdRemain=m*60+s; clearInterval(cdTimer); cdTimer=setInterval(()=>{ cdRemain--; cdUpdate(); },1000); cdUpdate(); };
+    document.getElementById('cd-reset').onclick=()=>{ clearInterval(cdTimer); cdTimer=null; const m=Math.max(0,parseInt(document.getElementById('cd-min').value||'0',10)); const s=Math.max(0,parseInt(document.getElementById('cd-sec').value||'0',10)); cdRemain=m*60+s; cdUpdate(); };
+    cdUpdate();
+
+    // ==================================================
+    // 5) NAMES
+    // ==================================================
+    const NG_KEY='dtb_names_v1';
+    const ngList=document.getElementById('ng-list'); const ngNoRep=document.getElementById('ng-noRepeat'); const ngPicked=document.getElementById('ng-picked'); const ngRemaining=document.getElementById('ng-remaining');
+    ngList.value = ls(NG_KEY) || '';
+    document.getElementById('ng-save').onclick=()=>{ ls(NG_KEY, ngList.value.trim()); flash('Namensliste gespeichert.'); };
+    document.getElementById('ng-clear').onclick=()=>{ ngList.value=''; ls(NG_KEY,''); };
+    let used=new Set();
+    function names(){ return ngList.value.split(/\r?\n/).map(s=>s.trim()).filter(Boolean); }
+    function updateRemaining(){ const total=names(); const rem=total.filter(n=>!used.has(n)); ngRemaining.textContent=`Übrig: ${rem.length}/${total.length}`; }
+    document.getElementById('ng-pick').onclick=()=>{ const all=names(); if(!all.length){ flash('Liste ist leer.'); return; } let pool=all; if(ngNoRep.checked){ pool=all.filter(n=>!used.has(n)); if(!pool.length){ used.clear(); pool=[...all]; }
+      }
+      const name=pool[Math.floor(Math.random()*pool.length)]; ngPicked.textContent=name; if(ngNoRep.checked) used.add(name); updateRemaining(); };
+    document.getElementById('ng-reset').onclick=()=>{ used.clear(); ngPicked.textContent='—'; updateRemaining(); };
+    updateRemaining();
+    document.getElementById('ng-groups').onclick=()=>{ const size=Math.max(2,parseInt(document.getElementById('ng-gsize').value||'2',10)); const arr=names(); if(arr.length<size){ flash('Zu wenige Namen.'); return; } const pool=[...arr]; shuffle(pool); const groups=[]; while(pool.length){ groups.push(pool.splice(0,size)); }
+      const out=groups.map((g,i)=>`<div class="hint" style="margin:6px 0"><b>Gruppe ${i+1}</b><br>${g.map(esc).join(', ')}</div>`).join(''); document.getElementById('ng-groupsOut').innerHTML=out; };
+
+    // ==================================================
+    // 6) CLOZE (Lückentext)
+    // ==================================================
+    const czOut=document.getElementById('cz-output'); let czKeyVisible=false; let czLast=null;
+    function tokenizeWords(text){ return text.match(/[A-Za-zÄÖÜäöüßÀ-ÖØ-öø-ÿ]+|[^\sA-Za-zÄÖÜäöüßÀ-ÖØ-öø-ÿ]+/g) || []; }
+    function makeCloze(){ const text=document.getElementById('cz-input').value; if(!text.trim()){ flash('Bitte Text einfügen.'); return; }
+      const pct=Math.max(0,Math.min(90,parseInt(document.getElementById('cz-pct').value||'20',10))); const minlen=Math.max(2,parseInt(document.getElementById('cz-minlen').value||'4',10));
+      const toks=tokenizeWords(text); const wordsIdx=[]; toks.forEach((t,i)=>{ if(/^[A-Za-zÄÖÜäöüßÀ-ÖØ-öø-ÿ]+$/.test(t) && t.length>=minlen) wordsIdx.push(i); });
+      shuffle(wordsIdx); const blanks=Math.floor(wordsIdx.length*pct/100); const chosen=new Set(wordsIdx.slice(0,blanks));
+      const key=[]; const worksheet=toks.map((t,i)=>{ if(chosen.has(i)){ key.push(t); const line = '_'.repeat(Math.max(4, Math.min( t.length+1, 20))); return line; } return t; }).join('');
+      czLast={worksheet, key}; czKeyVisible=false; renderCloze(); }
+    function renderCloze(){ if(!czLast){ czOut.textContent=''; return; } czOut.innerHTML = `<div style="white-space:pre-wrap">${esc(czLast.worksheet)}</div>` + (czKeyVisible? `<hr><div class="small"><b>Lösung:</b> ${czLast.key.map(esc).join(' / ')}</div>`: ''); }
+    document.getElementById('cz-make').onclick=makeCloze;
+    document.getElementById('cz-showKey').onclick=()=>{ czKeyVisible=!czKeyVisible; renderCloze(); };
+    document.getElementById('cz-copy').onclick=()=>{ if(!czLast){ return; } navigator.clipboard.writeText(czLast.worksheet).then(()=>flash('In Zwischenablage kopiert.')); };
+    document.getElementById('cz-print').onclick=()=>{ const w=window.open('','print'); const html=`<pre style="font-family:system-ui,Arial;white-space:pre-wrap">${esc(czLast?czLast.worksheet:'')}</pre>`; w.document.write(html); w.document.close(); w.focus(); w.print(); w.close(); };
+
+    // ==================================================
+    // 7) SCRAMBLER (Satzbau)
+    // ==================================================
+    function splitChunks(sentence, keepPunct){
+      const parts = sentence.split(/(,|;|:|\.|!|\?|—|–)/).filter(s=>s!==undefined && s!=='' );
+      if(keepPunct){
+        // Keep punctuation tokens but don't scramble them with words
+        let words=[]; let punct=[]; let buf='';
+        for(let i=0;i<parts.length;i++){
+          const t=parts[i];
+          if(/[,:;.!?—–]/.test(t)) { if(buf.trim()) { words.push(buf.trim()); buf=''; } punct.push(t); }
+          else { buf+=(t+' '); }
+        }
+        if(buf.trim()) words.push(buf.trim());
+        return {words, punct};
+      } else {
+        return {words: sentence.split(/\s+/).filter(Boolean), punct: []};
+      }
+    }
+    function makeScramble(){ const keep=document.getElementById('sb-keepPunct').checked; const lines=document.getElementById('sb-input').value.split(/\r?\n/).map(s=>s.trim()).filter(Boolean); if(!lines.length){ flash('Bitte Sätze eingeben.'); return; }
+      const out=lines.map((line,i)=>{ const {words} = splitChunks(line, keep); const mix=[...words]; shuffle(mix); return `<div class="hint" style="margin:6px 0"><b>Aufgabe ${i+1}:</b><br>${esc(mix.join(' | '))}</div>`; }).join('');
+      document.getElementById('sb-output').innerHTML=out; }
+    document.getElementById('sb-make').onclick=makeScramble;
+    document.getElementById('sb-print').onclick=()=>{ const html=`<div style="font-family:system-ui,Arial">${document.getElementById('sb-output').innerHTML}</div>`; const w=window.open('','print'); w.document.write(html); w.document.close(); w.focus(); w.print(); w.close(); };
+
+    // ==================================================
+    // 8) TEXT STATS
+    // ==================================================
+    function analyze(){ const t=document.getElementById('ts-input').value; const words=(t.match(/[A-Za-zÄÖÜäöüßÀ-ÖØ-öø-ÿ]+/g)||[]); const sentences=(t.match(/[.!?]+/g)||[]); const chars=(t.replace(/\s/g,'').length);
+      // Syllables (rough): count vowel groups
+      const syl=words.reduce((acc,w)=>{ const m=w.toLowerCase().match(/[aeiouyäöü]+/g); return acc + (m?m.length:1); },0); const avgSyl=words.length? (syl/words.length):0;
+      document.getElementById('ts-words').textContent=words.length; document.getElementById('ts-sent').textContent=sentences.length; document.getElementById('ts-chars').textContent=chars; document.getElementById('ts-syll').textContent=avgSyl.toFixed(2);
+      // Top words (stoplist basic)
+      const stop=new Set(['der','die','das','und','oder','zu','in','den','des','dem','ein','eine','einer','mit','auf','für','ist','sind','war','waren','wie','ich','du','er','sie','es','wir','ihr','man','nicht','auch','aber','noch','am','im','an','vom','vom','beim','beim','um','so','nur','wenn','weil','dass','daß','als']);
+      const freq={}; words.forEach(w=>{ const k=w.toLowerCase(); if(stop.has(k)) return; freq[k]=(freq[k]||0)+1; });
+      const top=Object.entries(freq).sort((a,b)=>b[1]-a[1]).slice(0,15).map(([w,c])=>`${esc(w)} (${c})`).join(', ');
+      document.getElementById('ts-top').innerHTML=top||'<span class="muted">—</span>';
+    }
+    document.getElementById('ts-analyze').onclick=analyze;
+
+    // ==================================================
+    // 9) DICTATION (SpeechSynthesis)
+    // ==================================================
+    let dkVoices=[]; function loadVoices(){ dkVoices = window.speechSynthesis.getVoices(); }
+    loadVoices(); if(speechSynthesis.onvoiceschanged!==undefined){ speechSynthesis.onvoiceschanged=loadVoices; }
+    let dkStop=false;
+    async function speakLine(line, rate){ return new Promise(res=>{ const u=new SpeechSynthesisUtterance(line); const deVoice = dkVoices.find(v=>/de|german/i.test(v.lang)); if(deVoice) u.voice=deVoice; u.rate=rate; u.onend=()=>res(); speechSynthesis.speak(u); }); }
+    document.getElementById('dk-start').onclick=async()=>{ const txt=document.getElementById('dk-input').value.trim(); if(!txt){ flash('Bitte Text eingeben.'); return; } const lines=txt.split(/\r?\n/).filter(Boolean); const rate=parseFloat(document.getElementById('dk-rate').value||'1'); const pause=parseFloat(document.getElementById('dk-pause').value||'2'); dkStop=false; document.getElementById('dk-status').textContent='Läuft…';
+      for(const ln of lines){ if(dkStop) break; await speakLine(ln, rate); if(dkStop) break; await new Promise(r=>setTimeout(r, pause*1000)); }
+      document.getElementById('dk-status').textContent= dkStop ? 'Gestoppt' : 'Fertig'; };
+    document.getElementById('dk-stop').onclick=()=>{ dkStop=true; window.speechSynthesis.cancel(); document.getElementById('dk-status').textContent='Gestoppt'; };
   </script>
 </body>
 </html>
+
