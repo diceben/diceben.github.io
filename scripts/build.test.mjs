@@ -12,6 +12,7 @@ import {
   render,
   effective,
   renderProject,
+  impressumComplete,
 } from "./build.mjs";
 
 test("data from a JSON file cannot inject markup", () => {
@@ -28,6 +29,11 @@ test("TODO placeholders count as empty", () => {
   assert.equal(isSet("   "), false);
   assert.equal(isSet(null), false);
   assert.equal(isSet("hello"), true);
+});
+
+test("false is empty — it must not stringify its way into being set", () => {
+  assert.equal(isSet(false), false);
+  assert.equal(isSet(true), true);
 });
 
 test("emails are written as numeric entities", () => {
@@ -48,6 +54,9 @@ test("{{#if}} keeps filled values and drops empty ones", () => {
   assert.equal(render("{{#if a}}yes{{/if}}", { a: "" }), "");
   assert.equal(render("{{#if a}}yes{{/if}}", { a: "TODO" }), "");
   assert.equal(render("{{#if a}}yes{{/if}}", { a: true }), "yes");
+  // Regression: a false flag used to render its block, which put the imprint's
+  // "not filled in yet" banner on a finished imprint page.
+  assert.equal(render("{{#if a}}yes{{/if}}", { a: false }), "");
 });
 
 test("two independent conditionals both resolve", () => {
@@ -63,6 +72,17 @@ test("overrides beat base fields", () => {
   });
   assert.equal(merged.tagline, "by hand");
   assert.equal(merged.name, "Tool");
+});
+
+test("an imprint needs a name and a contact, but no postal address", () => {
+  assert.equal(
+    impressumComplete({ name: "Ben Dice", email: "a@b.c", address: [] }),
+    true,
+  );
+  assert.equal(impressumComplete({ name: "Ben Dice", email: "TODO" }), false);
+  assert.equal(impressumComplete({ name: "TODO", email: "a@b.c" }), false);
+  assert.equal(impressumComplete({}), false);
+  assert.equal(impressumComplete(), false);
 });
 
 const PROJECT_TEMPLATE = `{{{nameHtml}}}|{{status}}|{{year}}|{{tagline}}|{{{tagsHtml}}}|{{{linksHtml}}}`;

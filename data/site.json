@@ -11,15 +11,15 @@
     "Almost everything here started as something I needed myself. If a tool survived past the weekend I built it in, it ends up on this page.",
     "Everything is open source. Take it, fork it, break it."
   ],
-  "email": "TODO",
+  "email": "deissben@gmail.com",
   "links": [
     { "label": "github", "url": "https://github.com/diceben" }
   ],
   "impressum": {
-    "enabled": false,
-    "name": "TODO",
-    "address": ["TODO"],
-    "email": "TODO",
+    "enabled": true,
+    "name": "Ben Dice",
+    "address": [],
+    "email": "deissben@gmail.com",
     "note": "Private, non-commercial website. No advertising, no tracking, no data collection."
   }
 }
