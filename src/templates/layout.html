@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{pageTitle}}</title>
+    <meta name="description" content="{{pageDescription}}" />
+    <link rel="canonical" href="{{canonical}}" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="author" content="{{siteName}}" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="{{siteName}}" />
+    <meta property="og:title" content="{{pageTitle}}" />
+    <meta property="og:description" content="{{pageDescription}}" />
+    <meta property="og:url" content="{{canonical}}" />
+    <meta property="og:locale" content="en" />
+    <meta name="twitter:card" content="summary" />
+{{{headExtra}}}
+    <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/assets/typewriter.css" />
+    <!-- Applies the stored theme before first paint so the page never flashes. -->
+    <script>
+      try {
+        var t = localStorage.getItem("theme");
+        if (t === "light" || t === "dark")
+          document.documentElement.setAttribute("data-theme", t);
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <div class="sheet">
+      <header class="masthead">
+        <p class="masthead__meta">{{host}}</p>
+        <h1 class="masthead__name"><a href="/">{{siteName}}</a></h1>
+        <p class="masthead__tagline">{{tagline}}<span class="caret" aria-hidden="true"></span></p>
+      </header>
+
+      <main id="main">
+{{{content}}}
+      </main>
+
+      <footer class="colophon">
+        <span>Set in Courier Prime.</span>
+        <a href="{{repoUrl}}">source</a>
+        {{{impressumLink}}}
+      </footer>
+    </div>
+    <script src="/assets/theme.js" defer></script>
+  </body>
+</html>

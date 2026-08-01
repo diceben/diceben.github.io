@@ -1,0 +1,4 @@
+{
+  "$comment": "Single source of truth for the project list. Entries with source 'sync' are written by scripts/sync-projects.mjs from repos tagged with the GitHub topic 'portfolio'. Anything inside an entry's 'overrides' object is never touched by the sync and always wins when the page is rendered. See CLAUDE.md.",
+  "projects": []
+}

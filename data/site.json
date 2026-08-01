@@ -1,0 +1,25 @@
+{
+  "name": "Ben",
+  "handle": "diceben",
+  "url": "https://diceben.github.io",
+  "title": "Ben — Tools & Projects",
+  "tagline": "Small tools, built to scratch my own itch.",
+  "description": "Tools and projects by Ben (@diceben). Small, self-contained things — published in case they are useful to someone else.",
+  "location": "Vienna, Austria",
+  "about": [
+    "I build small tools — mostly command line things, scripts and helpers that solve one problem properly instead of many problems halfway.",
+    "Almost everything here started as something I needed myself. If a tool survived past the weekend I built it in, it ends up on this page.",
+    "Everything is open source. Take it, fork it, break it."
+  ],
+  "email": "TODO",
+  "links": [
+    { "label": "github", "url": "https://github.com/diceben" }
+  ],
+  "impressum": {
+    "enabled": false,
+    "name": "TODO",
+    "address": ["TODO"],
+    "email": "TODO",
+    "note": "Private, non-commercial website. No advertising, no tracking, no data collection."
+  }
+}

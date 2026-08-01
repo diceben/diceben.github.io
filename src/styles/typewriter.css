@@ -1,0 +1,499 @@
+/* ---------------------------------------------------------------------------
+   typewriter.css — the whole look of diceben.github.io lives in this file.
+   Adjust the tokens in :root, not the rules underneath them.
+   --------------------------------------------------------------------------- */
+
+@font-face {
+  font-family: "Courier Prime";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("fonts/courier-prime-regular.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Courier Prime";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("fonts/courier-prime-bold.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Courier Prime";
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url("fonts/courier-prime-italic.woff2") format("woff2");
+}
+
+/* --- tokens --------------------------------------------------------------- */
+
+:root {
+  color-scheme: light dark;
+
+  --paper: #f5f1e8;
+  --ink: #241f1c;
+  --ink-faded: #6b625a;
+  --ribbon: #a3342b;
+  --rule: #c4b9a6;
+  --tag-bg: rgba(36, 31, 28, 0.05);
+
+  --grain-opacity: 0.45;
+  --grain-blend: multiply;
+
+  --measure: 74ch;
+  --leading: 1.7;
+  --type: "Courier Prime", "Courier New", Courier, ui-monospace, monospace;
+}
+
+:root[data-theme="dark"] {
+  --paper: #16140f;
+  --ink: #e8e2d6;
+  --ink-faded: #9a9188;
+  --ribbon: #e08a7d;
+  --rule: #4a443b;
+  --tag-bg: rgba(232, 226, 214, 0.07);
+  --grain-opacity: 0.18;
+  --grain-blend: screen;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #16140f;
+    --ink: #e8e2d6;
+    --ink-faded: #9a9188;
+    --ribbon: #e08a7d;
+    --rule: #4a443b;
+    --tag-bg: rgba(232, 226, 214, 0.07);
+    --grain-opacity: 0.18;
+    --grain-blend: screen;
+  }
+}
+
+/* --- base ----------------------------------------------------------------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  position: relative;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--type);
+  font-size: clamp(15px, 0.92rem + 0.18vw, 17px);
+  line-height: var(--leading);
+  text-rendering: optimizeLegibility;
+}
+
+/* Paper grain. Scrolls with the page — the texture belongs to the sheet, not to
+   the window — and never intercepts clicks. */
+body::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+  opacity: var(--grain-opacity);
+  mix-blend-mode: var(--grain-blend);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.42'/%3E%3C/svg%3E");
+}
+
+.sheet {
+  position: relative;
+  z-index: 1;
+  max-width: var(--measure);
+  margin: 0 auto;
+  padding: clamp(2rem, 6vw, 5rem) clamp(1.25rem, 5vw, 3rem) 4rem;
+}
+
+a {
+  color: var(--ribbon);
+  text-decoration: underline;
+  text-underline-offset: 0.22em;
+  text-decoration-thickness: 1px;
+}
+
+a:hover {
+  text-decoration-thickness: 2px;
+}
+
+:focus-visible {
+  outline: 2px solid var(--ribbon);
+  outline-offset: 3px;
+}
+
+.skip {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+}
+
+.skip:focus {
+  left: 1rem;
+  top: 1rem;
+  z-index: 5;
+  background: var(--paper);
+  padding: 0.4rem 0.8rem;
+  border: 1px solid var(--ink);
+}
+
+/* --- masthead ------------------------------------------------------------- */
+
+.masthead {
+  margin-bottom: 3.5rem;
+}
+
+.masthead__meta {
+  margin: 0 0 1.4rem;
+  color: var(--ink-faded);
+  font-size: 0.8rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.masthead__name {
+  margin: 0;
+  font-size: clamp(1.7rem, 1.1rem + 2.6vw, 2.6rem);
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  line-height: 1.15;
+}
+
+.masthead__name a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.masthead__tagline {
+  margin: 0.9rem 0 0;
+  color: var(--ink-faded);
+}
+
+.caret {
+  display: inline-block;
+  width: 0.55em;
+  height: 1.02em;
+  margin-left: 0.18em;
+  vertical-align: -0.17em;
+  background: var(--ink-faded);
+  animation: blink 1.05s steps(1) infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* --- sections ------------------------------------------------------------- */
+
+.section {
+  margin-bottom: 3.5rem;
+}
+
+.section:last-child {
+  margin-bottom: 0;
+}
+
+.section > h2 {
+  margin: 0 0 1.4rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+}
+
+/* A typed rule: real dashes, clipped to the column width. */
+.section > h2::after {
+  content: "--------------------------------------------------------------------------------------------------------------------";
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  margin-top: 0.5rem;
+  color: var(--rule);
+  font-weight: 400;
+  letter-spacing: 0;
+  user-select: none;
+}
+
+.section p {
+  margin: 0 0 1.1rem;
+  max-width: 68ch;
+}
+
+.section p:last-child {
+  margin-bottom: 0;
+}
+
+/* --- project list --------------------------------------------------------- */
+
+.projects {
+  counter-reset: project;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.project {
+  counter-increment: project;
+  margin-bottom: 2.4rem;
+}
+
+.project:last-child {
+  margin-bottom: 0;
+}
+
+.project__head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.7ch;
+  flex-wrap: wrap;
+}
+
+.project__head::before {
+  content: counter(project, decimal-leading-zero);
+  color: var(--ink-faded);
+  font-variant-numeric: tabular-nums;
+}
+
+.project__name {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.project__name a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.project__name a:hover {
+  color: var(--ribbon);
+}
+
+/* Leader dots between title and year, like a typed table of contents. */
+.project__lead {
+  flex: 1 1 4ch;
+  min-width: 2ch;
+  align-self: center;
+  border-bottom: 1px dotted var(--rule);
+}
+
+.project__year {
+  color: var(--ink-faded);
+  font-variant-numeric: tabular-nums;
+}
+
+.project__status {
+  color: var(--ink-faded);
+  font-size: 0.82rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.project__tagline {
+  margin: 0.5rem 0 0;
+  padding-left: 3ch;
+  max-width: 66ch;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5ch 1ch;
+  list-style: none;
+  margin: 0.6rem 0 0;
+  padding-left: 3ch;
+}
+
+.tags li {
+  padding: 0 0.6ch;
+  background: var(--tag-bg);
+  color: var(--ink-faded);
+  font-size: 0.82rem;
+}
+
+.tags li::before {
+  content: "[ ";
+}
+
+.tags li::after {
+  content: " ]";
+}
+
+.project__links {
+  margin: 0.6rem 0 0;
+  padding-left: 3ch;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 2.5ch;
+}
+
+.empty {
+  margin: 0;
+  color: var(--ink-faded);
+  font-style: italic;
+}
+
+/* --- contact + footer ----------------------------------------------------- */
+
+.contact {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.contact li {
+  display: flex;
+  gap: 1ch;
+}
+
+.contact__label {
+  flex: 0 0 10ch;
+  color: var(--ink-faded);
+}
+
+.colophon {
+  margin-top: 4rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--rule);
+  color: var(--ink-faded);
+  font-size: 0.82rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 2ch;
+  align-items: baseline;
+}
+
+.colophon a {
+  color: inherit;
+}
+
+.theme-toggle {
+  margin-left: auto;
+  padding: 0.2rem 0.8ch;
+  background: none;
+  border: 1px solid var(--rule);
+  color: inherit;
+  font: inherit;
+  font-size: 0.82rem;
+  cursor: pointer;
+}
+
+.theme-toggle:hover {
+  border-color: var(--ink-faded);
+  color: var(--ink);
+}
+
+.backlink {
+  margin: 0 0 2.5rem;
+}
+
+.addr {
+  margin: 0 0 1.1rem;
+  font-style: normal;
+}
+
+.todo {
+  padding: 0 0.6ch;
+  background: var(--ribbon);
+  color: var(--paper);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+/* --- narrow screens ------------------------------------------------------- */
+
+@media (max-width: 34rem) {
+  .project__tagline,
+  .tags,
+  .project__links {
+    padding-left: 0;
+  }
+
+  /* Leader dots need a line to lead across. On a narrow column they only push
+     the year onto a row of its own, so the head simply wraps instead. */
+  .project__lead {
+    display: none;
+  }
+
+  .contact li {
+    display: block;
+    margin-bottom: 0.8rem;
+  }
+
+  .contact__label {
+    display: block;
+    flex: none;
+  }
+}
+
+/* --- reduced motion ------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+
+  .caret {
+    animation: none;
+    opacity: 1;
+  }
+}
+
+/* --- print: it is a typed page, it should print like one ------------------ */
+
+@media print {
+  :root {
+    --paper: #fff;
+    --ink: #000;
+    --ink-faded: #444;
+    --ribbon: #000;
+    --rule: #999;
+  }
+
+  body::after,
+  .theme-toggle,
+  .skip {
+    display: none !important;
+  }
+
+  .sheet {
+    max-width: none;
+    padding: 0;
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  .project__links a[href]::after,
+  .contact a[href^="http"]::after {
+    content: " <" attr(href) ">";
+    font-size: 0.85em;
+    color: #444;
+  }
+
+  .project {
+    break-inside: avoid;
+  }
+}
