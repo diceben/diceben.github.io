@@ -1,0 +1,11 @@
+    <li class="project">
+      <div class="project__head">
+        <h3 class="project__name">{{{nameHtml}}}</h3>
+        {{#if status}}<span class="project__status">[{{status}}]</span>{{/if}}
+        <span class="project__lead" aria-hidden="true"></span>
+        {{#if year}}<span class="project__year">{{year}}</span>{{/if}}
+      </div>
+      {{#if tagline}}<p class="project__tagline">{{tagline}}</p>{{/if}}
+      {{#if tagsHtml}}<ul class="tags">{{{tagsHtml}}}</ul>{{/if}}
+      <p class="project__links">{{{linksHtml}}}</p>
+    </li>
