@@ -1,4 +1,18 @@
 {
   "$comment": "Single source of truth for the project list. Entries with source 'sync' are written by scripts/sync-projects.mjs from repos tagged with the GitHub topic 'portfolio'. Anything inside an entry's 'overrides' object is never touched by the sync and always wins when the page is rendered. See CLAUDE.md.",
-  "projects": []
+  "projects": [
+    {
+      "slug": "vienna-day-planner",
+      "repo": "diceben/vienna-day-planner",
+      "name": "Vienna Day Planner",
+      "tagline": "Interactive Vienna map that plans your day — set a time and interests, get a route.",
+      "tags": ["map", "travel", "vienna", "javascript"],
+      "url": "https://diceben.github.io/vienna-day-planner/",
+      "status": "active",
+      "featured": true,
+      "hidden": false,
+      "pushedAt": "2026-08-02",
+      "source": "sync"
+    }
+  ]
 }
