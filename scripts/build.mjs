@@ -30,9 +30,14 @@ export function esc(value) {
   return String(value ?? "").replace(/[&<>"']/g, (c) => ESCAPES[c]);
 }
 
-/** A value counts as "filled in" when it is a non-empty string that is not a TODO marker. */
+/**
+ * A value counts as "filled in" when it is a non-empty string that is not a TODO
+ * marker. Booleans answer for themselves — without this, `false` stringifies to
+ * "false" and would count as filled in.
+ */
 export function isSet(value) {
   if (value === null || value === undefined) return false;
+  if (typeof value === "boolean") return value;
   const s = String(value).trim();
   return s !== "" && s.toUpperCase() !== "TODO";
 }
@@ -54,7 +59,7 @@ export function render(template, data) {
     previous = out;
     out = out.replace(
       /\{\{#if\s+([\w.]+)\s*\}\}([\s\S]*?)\{\{\/if\}\}/g,
-      (_, key, body) => (isSet(data[key]) || data[key] === true ? body : ""),
+      (_, key, body) => (isSet(data[key]) ? body : ""),
     );
   } while (out !== previous);
 
@@ -129,6 +134,15 @@ export function renderProject(template, project) {
   });
 }
 
+/**
+ * An imprint counts as complete once it names someone and gives a way to reach
+ * them. The postal address is deliberately optional — Ben asked for it to be
+ * left off, and an incomplete imprint is never linked or indexed.
+ */
+export function impressumComplete(imprint = {}) {
+  return isSet(imprint?.name) && isSet(imprint?.email);
+}
+
 /* --- pages ---------------------------------------------------------------- */
 
 export async function build() {
@@ -138,11 +152,8 @@ export async function build() {
   const layout = await readTemplate("layout.html");
   const host = new URL(site.url).host;
   const repoUrl = `https://github.com/${site.handle}/${host}`;
-  const impressumComplete =
-    isSet(site.impressum?.name) &&
-    isSet(site.impressum?.email) &&
-    (site.impressum?.address ?? []).some(isSet);
-  const showImpressum = site.impressum?.enabled === true && impressumComplete;
+  const complete = impressumComplete(site.impressum);
+  const showImpressum = site.impressum?.enabled === true && complete;
 
   /** Wraps page content in the shared shell. */
   function page({ title, description, canonicalPath, content, headExtra = "" }) {
@@ -234,7 +245,7 @@ export async function build() {
           ? ""
           : '    <meta name="robots" content="noindex" />',
         content: render(await readTemplate("impressum.html"), {
-          incomplete: !impressumComplete,
+          incomplete: !complete,
           addressLines,
           contactLine: isSet(imprint.email)
             ? `  <p>Email: <a href="mailto:${entities(imprint.email)}">${entities(imprint.email)}</a></p>`

@@ -99,19 +99,24 @@ von Hand in der Datei umsortieren — das macht der Sync wieder rückgängig.
 - Kontrast in beiden Themes mindestens 7:1, sichtbare Fokusringe, und alles muss
   `prefers-reduced-motion` respektieren.
 
-## Offene TODOs
+## Platzhalter und Entscheidungen
 
-Diese Platzhalter stehen absichtlich in `data/site.json` und warten auf Ben:
+Der `isSet()`-Mechanismus im Build behandelt `"TODO"` wie leer. Ein Feld auf
+`"TODO"` zu setzen ist also der saubere Weg, etwas bewusst offen zu lassen — die
+zugehörige Zeile verschwindet dann einfach von der Seite.
 
-- **`email`** — steht auf `"TODO"`. Ben hat zwei Adressen; ohne seine ausdrückliche
-  Ansage keine davon eintragen. Solange `"TODO"`, fehlt die Zeile im Kontaktblock.
-- **`impressum`** — `enabled: false`, Name und Adresse sind `"TODO"`. Die Seite
-  wird gebaut, zeigt sichtbar TODO, ist auf `noindex` und wird nirgends verlinkt.
-  Erst wenn Ben die Daten liefert: Felder füllen **und** `enabled: true` setzen.
-- **`LICENSE`** — die Copyright-Zeile nennt den GitHub-Handle, weil der volle
-  Name nie genannt wurde. Ersetzen, sobald Ben ihn sagt.
+Getroffene Entscheidungen, nicht eigenmächtig ändern:
 
-Nichts davon erfinden. Nachfragen.
+- **`email`** — `deissben@gmail.com`, von Ben ausdrücklich freigegeben. Wird als
+  HTML-Entities ausgegeben, steht nirgends im Klartext.
+- **`impressum`** — Name `Ben Dice`, **bewusst ohne Postadresse** (Ben:
+  „keine Adresse angeben"). Die Vollständigkeitsprüfung
+  (`impressumComplete()`) verlangt deshalb nur Name und E-Mail. Seite ist
+  freigeschaltet, verlinkt und in der Sitemap.
+- **`LICENSE`** — die Copyright-Zeile nennt noch den GitHub-Handle. Kann auf
+  „Ben Dice" umgestellt werden.
+
+Nichts erfinden, was hier nicht steht. Nachfragen.
 
 ## Git
 
