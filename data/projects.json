@@ -6,12 +6,17 @@
       "repo": "diceben/vienna-day-planner",
       "name": "Vienna Day Planner",
       "tagline": "Interactive Vienna map that plans your day — set a time and interests, get a route.",
-      "tags": ["map", "travel", "vienna", "javascript"],
-      "url": "https://diceben.github.io/vienna-day-planner/",
+      "tags": [
+        "map",
+        "travel",
+        "vienna",
+        "javascript"
+      ],
+      "url": "",
       "status": "active",
       "featured": true,
       "hidden": false,
-      "pushedAt": "2026-08-02",
+      "pushedAt": "2026-08-03",
       "source": "sync"
     }
   ]
