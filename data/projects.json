@@ -18,6 +18,23 @@
       "hidden": false,
       "pushedAt": "2026-08-04",
       "source": "sync"
+    },
+    {
+      "slug": "stageplot-generator",
+      "repo": "diceben/stageplot-generator",
+      "name": "Stageplot Generator",
+      "tagline": "Offline-first Stageplot-Designer mit Routing und Drum-Designer",
+      "tags": [
+        "live-sound",
+        "music",
+        "stageplot",
+        "html"
+      ],
+      "url": "https://diceben.github.io/stageplot-generator/",
+      "status": "active",
+      "hidden": false,
+      "pushedAt": "2026-09-01",
+      "source": "sync"
     }
   ]
 }
